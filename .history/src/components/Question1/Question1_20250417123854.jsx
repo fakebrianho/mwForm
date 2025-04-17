@@ -67,7 +67,7 @@ function Question1(props) {
 	return (
 		<div
 			style={{
-				width: '50vw',
+				width: 500,
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,

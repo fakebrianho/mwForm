@@ -64,10 +64,27 @@ function Question1(props) {
 		return null // Or a loading indicator
 	}
 
+	// Calculate width based on screen size
+	const containerWidth = windowWidth <= 768 ? '90vw' : 500
+
+	// Also adjust the random position calculation for smaller screens
+	useEffect(() => {
+		if (windowWidth <= 768 && position) {
+			// Make sure the window doesn't go off-screen on smaller devices
+			const maxX = windowWidth - windowWidth * 0.9
+			if (position.x > maxX) {
+				setPosition({
+					...position,
+					x: maxX > 0 ? maxX : 0,
+				})
+			}
+		}
+	}, [windowWidth, position])
+
 	return (
 		<div
 			style={{
-				width: '50vw',
+				width: containerWidth,
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,

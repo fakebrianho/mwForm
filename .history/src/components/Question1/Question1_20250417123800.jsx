@@ -8,10 +8,37 @@ function Question1(props) {
 	const [isDragging, setIsDragging] = useState(false)
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 	const [isVisible, setIsVisible] = useState(true) // State for visibility
+	const [windowWidth, setWindowWidth] = useState(
+		typeof window !== 'undefined' ? window.innerWidth : 1024
+	)
 
+	// First useEffect - for initial setup
 	useEffect(() => {
+		// Set initial random position
 		setPosition(getRandomPosition())
+
+		// Handle window resize
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
 	}, [])
+
+	// Second useEffect - for position adjustment on window width change
+	useEffect(() => {
+		if (windowWidth <= 768 && position) {
+			// Make sure the window doesn't go off-screen on smaller devices
+			const maxX = windowWidth - windowWidth * 0.9
+			if (position.x > maxX) {
+				setPosition({
+					...position,
+					x: maxX > 0 ? maxX : 0,
+				})
+			}
+		}
+	}, [windowWidth, position])
 
 	// Handle mouse down event to start dragging
 	const handleMouseDown = (e) => {
@@ -44,7 +71,7 @@ function Question1(props) {
 		// setIsVisible(false)
 	}
 
-	// Add and remove event listeners
+	// Third useEffect - for drag event listeners
 	useEffect(() => {
 		if (isDragging) {
 			document.addEventListener('mousemove', handleMouseMove)
@@ -58,16 +85,19 @@ function Question1(props) {
 			document.removeEventListener('mousemove', handleMouseMove)
 			document.removeEventListener('mouseup', handleMouseUp)
 		}
-	}, [isDragging, dragOffset])
+	}, [isDragging, dragOffset, handleMouseMove, handleMouseUp])
 
 	if (!position || !isVisible) {
 		return null // Or a loading indicator
 	}
 
+	// Calculate width based on screen size
+	const containerWidth = windowWidth <= 768 ? '90vw' : 500
+
 	return (
 		<div
 			style={{
-				width: '50vw',
+				width: containerWidth,
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,

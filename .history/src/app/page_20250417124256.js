@@ -9,7 +9,6 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import Model from '@/components/Model/Model'
 import { Environment, OrbitControls } from '@react-three/drei'
-import { useWindowWidth } from '@/app/hooks/useWindowWidth'
 
 export default function Home() {
 	const [stage, setStage] = useState(0)
@@ -21,8 +20,6 @@ export default function Home() {
 	const [answer5, setAnswer5] = useState('')
 	const [answer6, setAnswer6] = useState('')
 	const [answer7, setAnswer7] = useState('')
-	const windowWidth = useWindowWidth()
-
 	useEffect(() => {
 		if (stage === 8) {
 			const payload = {
@@ -44,7 +41,8 @@ export default function Home() {
 					<Suspense fallback={null}>
 						<mesh>
 							<OrbitControls />
-							<Model size={windowWidth} />
+
+							<Model />
 							<Environment preset='sunset' />
 						</mesh>
 					</Suspense>
