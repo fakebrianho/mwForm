@@ -1,0 +1,6 @@
+.container {
+	width: 500px;
+	height: 150px;
+	position: absolute;
+	z-index: 1000;
+}
