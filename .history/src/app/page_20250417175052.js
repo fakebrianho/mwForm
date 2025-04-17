@@ -40,7 +40,7 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
-				<Canvas camera={{ position: [0, 0.1, 5] }}>
+				<Canvas camera={{position: 0, 0.5, 0}}>
 					<Suspense fallback={null}>
 						<mesh>
 							<OrbitControls />

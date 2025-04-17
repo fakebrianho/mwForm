@@ -11,13 +11,8 @@ function Model(props) {
 		<>
 			<primitive
 				object={scene}
-				scale={props.scale}
-				// position={
-				// 	props.size > 768
-				// 		? [...props.position]
-				// 		: [props.size.x, props.size.y, props.size.z - 2]
-				// }
-				position={props.position}
+				scale={1.5}
+				position={props.size > 768 ? [...props.position] : [0, -2, 0]}
 				rotation={[0, -Math.PI / 2, 0]}
 			/>
 		</>

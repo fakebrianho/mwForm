@@ -40,14 +40,14 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
-				<Canvas camera={{ position: [0, 0.1, 5] }}>
+				<Canvas>
 					<Suspense fallback={null}>
 						<mesh>
 							<OrbitControls />
 							<Model
 								size={windowWidth}
-								scale={0.4}
-								position={[0, -0.45, 4.2]}
+								scale={1}
+								position={[0, -0.95, 3]}
 								url={'/comp2.glb'}
 							/>
 
