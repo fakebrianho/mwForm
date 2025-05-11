@@ -1,0 +1,44 @@
+.container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: black;
+	color: white;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@keyframes flicker {
+	0% {
+		opacity: 1;
+	}
+	10% {
+		opacity: 0.8;
+	}
+	20% {
+		opacity: 1;
+	}
+	40% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 0.9;
+	}
+	80% {
+		opacity: 0.6;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+h1 {
+	animation: flicker 2s infinite;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
