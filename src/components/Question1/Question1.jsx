@@ -41,6 +41,7 @@ function Question1(props) {
 	const handleClose = (e) => {
 		e.stopPropagation() // Prevent triggering the drag handler
 		props.setStage(1)
+		props.setPixel((prev) => prev + 5)
 		// setIsVisible(false)
 	}
 

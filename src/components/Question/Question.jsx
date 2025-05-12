@@ -56,6 +56,7 @@ function Question2(props) {
 		e.preventDefault()
 		props.answerQuestion(input)
 		props.setStage((prev) => prev + 1)
+		props.setPixel((prev) => prev + 5)
 	}
 
 	if (!position) {

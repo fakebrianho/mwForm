@@ -6,6 +6,14 @@ import Question from '@/components/Question/Question'
 import { useEffect, useState, useRef } from 'react'
 import { useSaveData } from '@/app/hooks/useData'
 import { Canvas } from '@react-three/fiber'
+import {
+	Bloom,
+	Pixelation,
+	EffectComposer,
+	Noise,
+	Vignette,
+} from '@react-three/postprocessing'
+
 import { Suspense } from 'react'
 import {
 	Environment,
@@ -115,6 +123,7 @@ function CameraAnimation() {
 
 export default function Home() {
 	const [stage, setStage] = useState(0)
+	const [pixelCount, setPixelCount] = useState(0)
 	const [showQuestions, setShowQuestions] = useState(false)
 	const saveData = useSaveData()
 	const [answer1, setAnswer1] = useState('')
@@ -212,9 +221,9 @@ export default function Home() {
 			// Fade out the black overlay
 			gsap.to(fadeOverlayRef.current, {
 				opacity: 0,
-				duration: 1.5,
+				duration: 1,
 				ease: 'power2.inOut',
-				delay: 0.5, // Short delay before starting fade
+				delay: 0.2, // Short delay before starting fade
 				onComplete: () => {
 					setTransitionStage('complete')
 				},
@@ -249,7 +258,6 @@ export default function Home() {
 	// Render the full application once models are loaded
 	return (
 		<div className={styles.page}>
-			{/* Black overlay that starts visible and fades out */}
 			{transitionStage === 'overlay' && (
 				<div
 					ref={fadeOverlayRef}
@@ -282,6 +290,18 @@ export default function Home() {
 						},
 					}}
 				>
+					<EffectComposer>
+						<Bloom
+							luminanceThreshold={0}
+							luminanceSmoothing={0.9}
+							height={300}
+						/>
+						<Pixelation
+							granularity={pixelCount} // pixel granularity
+						/>
+						<Noise opacity={0.02} />
+						<Vignette eskil={false} offset={0.1} darkness={1.05} />
+					</EffectComposer>
 					<CameraAnimation />
 					<mesh>
 						<OrbitControls
@@ -298,9 +318,9 @@ export default function Home() {
 						<ModelLoader
 							size={windowWidth}
 							scale={0.4}
-							position={[0, 0.49, 3.3]}
+							position={[0, -0.47, 3.3]}
 							rotation={[0, 0, 0]}
-							url={'/comp.glb'}
+							url={'/decimated.glb'}
 						/>
 
 						<ModelLoader
@@ -325,9 +345,15 @@ export default function Home() {
 			<main className={styles.main}>
 				{showQuestions && (
 					<>
-						{stage === 0 && <Question1 setStage={setStage} />}
+						{stage === 0 && (
+							<Question1
+								setStage={setStage}
+								setPixel={setPixelCount}
+							/>
+						)}
 						{stage >= 1 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'1'}
 								question={'Shop Name: '}
@@ -336,6 +362,7 @@ export default function Home() {
 						)}
 						{stage >= 2 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'2'}
 								question={'Instagram Handle: '}
@@ -344,6 +371,7 @@ export default function Home() {
 						)}
 						{stage >= 3 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'3'}
 								question={'City: '}
@@ -352,6 +380,7 @@ export default function Home() {
 						)}
 						{stage >= 4 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'4'}
 								question={
@@ -362,6 +391,7 @@ export default function Home() {
 						)}
 						{stage >= 5 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'5'}
 								question={'Shop Cut / Fee'}
@@ -370,6 +400,7 @@ export default function Home() {
 						)}
 						{stage >= 6 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'6'}
 								question={'Shop Email or Contact Info'}
@@ -378,6 +409,7 @@ export default function Home() {
 						)}
 						{stage >= 7 && (
 							<Question
+								setPixel={setPixelCount}
 								setStage={setStage}
 								stage={'7'}
 								question={
