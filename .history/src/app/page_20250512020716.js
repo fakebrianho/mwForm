@@ -416,51 +416,15 @@ export default function Home() {
 					camera={{ position: [0, 0.5, 5] }}
 					gl={{
 						preserveDrawingBuffer: true,
-						antialias: false,
-						powerPreference: 'default',
+						antialias: true,
+						powerPreference: 'high-performance',
 						failIfMajorPerformanceCaveat: false,
 						onContextLost: (event) => {
-							console.error('WebGL context lost, details:', event)
-							setLoadError(
-								'WebGL context lost. Try refreshing the page.'
+							console.log(
+								'WebGL context lost, attempting to restore'
 							)
 							event.preventDefault()
 						},
-						onContextRestored: () => {
-							console.log('WebGL context restored!')
-							setLoadError(null)
-						},
-					}}
-					onCreated={({ gl }) => {
-						// Get the actual WebGL context
-						const context = gl.getContext()
-
-						// Now use the context to get extensions
-						const debugInfo = context.getExtension(
-							'WEBGL_debug_renderer_info'
-						)
-						if (debugInfo) {
-							console.log(
-								'Renderer:',
-								context.getParameter(
-									debugInfo.UNMASKED_RENDERER_WEBGL
-								)
-							)
-							console.log(
-								'Vendor:',
-								context.getParameter(
-									debugInfo.UNMASKED_VENDOR_WEBGL
-								)
-							)
-						}
-						console.log(
-							'WebGL Version:',
-							context.getParameter(context.VERSION)
-						)
-						console.log(
-							'Max texture size:',
-							context.getParameter(context.MAX_TEXTURE_SIZE)
-						)
 					}}
 				>
 					<EffectComposer>

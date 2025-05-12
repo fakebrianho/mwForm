@@ -432,34 +432,28 @@ export default function Home() {
 						},
 					}}
 					onCreated={({ gl }) => {
-						// Get the actual WebGL context
-						const context = gl.getContext()
-
-						// Now use the context to get extensions
-						const debugInfo = context.getExtension(
+						const debugInfo = gl.getExtension(
 							'WEBGL_debug_renderer_info'
 						)
 						if (debugInfo) {
 							console.log(
 								'Renderer:',
-								context.getParameter(
+								gl.getParameter(
 									debugInfo.UNMASKED_RENDERER_WEBGL
 								)
 							)
 							console.log(
 								'Vendor:',
-								context.getParameter(
-									debugInfo.UNMASKED_VENDOR_WEBGL
-								)
+								gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
 							)
 						}
 						console.log(
 							'WebGL Version:',
-							context.getParameter(context.VERSION)
+							gl.getParameter(gl.VERSION)
 						)
 						console.log(
 							'Max texture size:',
-							context.getParameter(context.MAX_TEXTURE_SIZE)
+							gl.getParameter(gl.MAX_TEXTURE_SIZE)
 						)
 					}}
 				>

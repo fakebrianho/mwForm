@@ -170,93 +170,6 @@ function DebugOverlay({ enabled = true }) {
 	)
 }
 
-function VisibleConsole() {
-	const [logs, setLogs] = useState([])
-	const logContainerRef = useRef(null)
-
-	useEffect(() => {
-		// Capture console methods
-		const originalConsole = {
-			log: console.log,
-			error: console.error,
-			warn: console.warn,
-		}
-
-		// Override console methods
-		console.log = (...args) => {
-			originalConsole.log(...args)
-			setLogs((prev) =>
-				[...prev, { type: 'log', message: args.join(' ') }].slice(-20)
-			)
-		}
-
-		console.error = (...args) => {
-			originalConsole.error(...args)
-			setLogs((prev) =>
-				[...prev, { type: 'error', message: args.join(' ') }].slice(-20)
-			)
-		}
-
-		console.warn = (...args) => {
-			originalConsole.warn(...args)
-			setLogs((prev) =>
-				[...prev, { type: 'warn', message: args.join(' ') }].slice(-20)
-			)
-		}
-
-		// Restore original on cleanup
-		return () => {
-			console.log = originalConsole.log
-			console.error = originalConsole.error
-			console.warn = originalConsole.warn
-		}
-	}, [])
-
-	useEffect(() => {
-		if (logContainerRef.current) {
-			logContainerRef.current.scrollTop =
-				logContainerRef.current.scrollHeight
-		}
-	}, [logs])
-
-	return (
-		<div
-			ref={logContainerRef}
-			style={{
-				position: 'absolute',
-				bottom: 0,
-				left: 0,
-				right: 0,
-				maxHeight: '30vh',
-				overflowY: 'auto',
-				background: 'rgba(0,0,0,0.8)',
-				color: 'white',
-				fontFamily: 'monospace',
-				fontSize: '10px',
-				padding: '5px',
-				zIndex: 10000,
-			}}
-		>
-			{logs.map((log, index) => (
-				<div
-					key={index}
-					style={{
-						color:
-							log.type === 'error'
-								? 'red'
-								: log.type === 'warn'
-								? 'yellow'
-								: 'white',
-						marginBottom: '2px',
-					}}
-				>
-					{log.message}
-				</div>
-			))}
-		</div>
-	)
-}
-
 export default function Home() {
 	const [stage, setStage] = useState(0)
 	const [pixelCount, setPixelCount] = useState(0)
@@ -416,51 +329,15 @@ export default function Home() {
 					camera={{ position: [0, 0.5, 5] }}
 					gl={{
 						preserveDrawingBuffer: true,
-						antialias: false,
-						powerPreference: 'default',
+						antialias: true,
+						powerPreference: 'high-performance',
 						failIfMajorPerformanceCaveat: false,
 						onContextLost: (event) => {
-							console.error('WebGL context lost, details:', event)
-							setLoadError(
-								'WebGL context lost. Try refreshing the page.'
+							console.log(
+								'WebGL context lost, attempting to restore'
 							)
 							event.preventDefault()
 						},
-						onContextRestored: () => {
-							console.log('WebGL context restored!')
-							setLoadError(null)
-						},
-					}}
-					onCreated={({ gl }) => {
-						// Get the actual WebGL context
-						const context = gl.getContext()
-
-						// Now use the context to get extensions
-						const debugInfo = context.getExtension(
-							'WEBGL_debug_renderer_info'
-						)
-						if (debugInfo) {
-							console.log(
-								'Renderer:',
-								context.getParameter(
-									debugInfo.UNMASKED_RENDERER_WEBGL
-								)
-							)
-							console.log(
-								'Vendor:',
-								context.getParameter(
-									debugInfo.UNMASKED_VENDOR_WEBGL
-								)
-							)
-						}
-						console.log(
-							'WebGL Version:',
-							context.getParameter(context.VERSION)
-						)
-						console.log(
-							'Max texture size:',
-							context.getParameter(context.MAX_TEXTURE_SIZE)
-						)
 					}}
 				>
 					<EffectComposer>
@@ -644,7 +521,6 @@ export default function Home() {
 			>
 				🐞
 			</div>
-			{debugMode && <VisibleConsole />}
 		</div>
 	)
 }
