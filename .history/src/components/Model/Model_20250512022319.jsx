@@ -1,3 +1,4 @@
+@@ -0,0 +1,27 @@
 import { GLTFLoader } from 'three/addons'
 import { useLoader } from '@react-three/fiber'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'

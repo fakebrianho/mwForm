@@ -323,13 +323,12 @@ export default function Home() {
 	// Detect mobile devices
 	useEffect(() => {
 		const checkMobile = () => {
-			const mobile =
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-					navigator.userAgent
-				)
+			const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				navigator.userAgent
+			)
 			setIsMobile(mobile)
 		}
-
+		
 		checkMobile()
 		window.addEventListener('resize', checkMobile)
 		return () => window.removeEventListener('resize', checkMobile)
@@ -345,13 +344,16 @@ export default function Home() {
 					<directionalLight position={[10, 10, 5]} intensity={1} />
 					<mesh position={[0, 0, 0]}>
 						<boxGeometry args={[1, 1, 1]} />
-						<meshStandardMaterial color='blue' />
+						<meshStandardMaterial color="blue" />
 					</mesh>
-					<OrbitControls enableZoom={false} enablePan={false} />
+					<OrbitControls 
+						enableZoom={false}
+						enablePan={false}
+					/>
 				</Canvas>
 			)
 		}
-
+		
 		// Return the full experience for desktop
 		return (
 			<Canvas camera={{ position: [0, 0.5, 5] }}>
@@ -387,19 +389,17 @@ export default function Home() {
 	}
 
 	useEffect(() => {
-		let isMounted = true
-
+		let isMounted = true;
+		
 		const loadModels = async () => {
 			try {
 				// Create a loader with progress tracking
-				const dracoLoader = new DRACOLoader()
-				dracoLoader.setDecoderPath(
-					'https://www.gstatic.com/draco/v1/decoders/'
-				)
-
-				const gltfLoader = new GLTFLoader()
-				gltfLoader.setDRACOLoader(dracoLoader)
-
+				const dracoLoader = new DRACOLoader();
+				dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+				
+				const gltfLoader = new GLTFLoader();
+				gltfLoader.setDRACOLoader(dracoLoader);
+				
 				// Function to load a single model with progress tracking
 				const loadModelWithProgress = (url, weight) => {
 					return new Promise((resolve, reject) => {
@@ -409,53 +409,8 @@ export default function Home() {
 							(xhr) => {
 								if (isMounted && xhr.lengthComputable) {
 									// Update progress based on model weight
-									const modelProgress =
-										(xhr.loaded / xhr.total) * weight
-									setLoadingProgress((prev) =>
-										Math.min(
-											prev + modelProgress * 0.01,
-											0.95
-										)
-									)
-								}
-							},
-							(error) => reject(error)
-						)
-					})
-				}
-
-				// Start with some initial progress
-				setLoadingProgress(0.1)
-
-				// Only load heavyweight models if not on mobile
-				if (!isMobile) {
-					await loadModelWithProgress('/decimated.glb', 40)
-					await loadModelWithProgress('/backrooms_long_hall.glb', 50)
-				}
-
-				if (isMounted) {
-					setLoadingProgress(1)
-					setTransitionStage('overlay')
-					setModelsLoaded(true)
-				}
-			} catch (error) {
-				console.error('Failed to load models:', error)
-				if (isMounted) {
-					setLoadError(error.message || 'Failed to load 3D models')
-				}
-			}
-		}
-
-		loadModels()
-
-		return () => {
-			isMounted = false
-		}
-	}, [isMobile])
-
-	// Display error if loading fails
-	if (loadError) {
-		return (
+									const modelProgress = (xhr.loaded / xhr.total) * weight;
+									setLoadingProgress(prev => 
 			<div
 				style={{
 					padding: '20px',
@@ -484,11 +439,6 @@ export default function Home() {
 				</button>
 			</div>
 		)
-	}
-
-	// Show loading indicator if not loaded yet
-	if (transitionStage === 'loading' || !modelsLoaded) {
-		return <Loading progress={loadingProgress * 100} />
 	}
 
 	// Render the full application once models are loaded

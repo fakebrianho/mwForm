@@ -247,8 +247,6 @@ export default function Home() {
 	const [mousePosition, setMousePosition] = useState(new THREE.Vector2())
 	const [modelsLoaded, setModelsLoaded] = useState(false)
 	const [transitionStage, setTransitionStage] = useState('loading') // 'loading', 'overlay', 'complete'
-	const [isMobile, setIsMobile] = useState(false)
-	const [loadingProgress, setLoadingProgress] = useState(0)
 
 	const fadeOverlayRef = useRef(null)
 	const [loadError, setLoadError] = useState(null)
@@ -320,139 +318,6 @@ export default function Home() {
 		setShowQuestions(true)
 	}
 
-	// Detect mobile devices
-	useEffect(() => {
-		const checkMobile = () => {
-			const mobile =
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-					navigator.userAgent
-				)
-			setIsMobile(mobile)
-		}
-
-		checkMobile()
-		window.addEventListener('resize', checkMobile)
-		return () => window.removeEventListener('resize', checkMobile)
-	}, [])
-
-	// Simplified canvas for mobile
-	const renderCanvas = () => {
-		if (isMobile) {
-			return (
-				<Canvas camera={{ position: [0, 0.5, 5] }}>
-					{/* Simplified scene with minimal elements */}
-					<ambientLight intensity={0.5} />
-					<directionalLight position={[10, 10, 5]} intensity={1} />
-					<mesh position={[0, 0, 0]}>
-						<boxGeometry args={[1, 1, 1]} />
-						<meshStandardMaterial color='blue' />
-					</mesh>
-					<OrbitControls enableZoom={false} enablePan={false} />
-				</Canvas>
-			)
-		}
-
-		// Return the full experience for desktop
-		return (
-			<Canvas camera={{ position: [0, 0.5, 5] }}>
-				{/* Your existing complex scene */}
-				<OrbitControls
-					enableZoom={false}
-					enableDamping={true}
-					enablePan={false}
-					minPolarAngle={Math.PI / 2.35}
-					maxPolarAngle={Math.PI / 2}
-					minAzimuthAngle={-Math.PI / 15}
-					dampingFactor={0.035}
-					maxAzimuthAngle={Math.PI / 15}
-					rotateSpeed={0.15}
-				/>
-				<Model
-					size={windowWidth}
-					scale={0.4}
-					position={[0, -0.47, 3.3]}
-					rotation={[0, 0, 0]}
-					url={'/decimated.glb'}
-				/>
-				<Model
-					position={[0, 0, 0]}
-					size={windowWidth}
-					rotation={[0, -Math.PI / 2, 0]}
-					url={'/backrooms_long_hall.glb'}
-				/>
-				<Environment preset='warehouse' />
-				{/* ... rest of your 3D elements */}
-			</Canvas>
-		)
-	}
-
-	useEffect(() => {
-		let isMounted = true
-
-		const loadModels = async () => {
-			try {
-				// Create a loader with progress tracking
-				const dracoLoader = new DRACOLoader()
-				dracoLoader.setDecoderPath(
-					'https://www.gstatic.com/draco/v1/decoders/'
-				)
-
-				const gltfLoader = new GLTFLoader()
-				gltfLoader.setDRACOLoader(dracoLoader)
-
-				// Function to load a single model with progress tracking
-				const loadModelWithProgress = (url, weight) => {
-					return new Promise((resolve, reject) => {
-						gltfLoader.load(
-							url,
-							(gltf) => resolve(gltf),
-							(xhr) => {
-								if (isMounted && xhr.lengthComputable) {
-									// Update progress based on model weight
-									const modelProgress =
-										(xhr.loaded / xhr.total) * weight
-									setLoadingProgress((prev) =>
-										Math.min(
-											prev + modelProgress * 0.01,
-											0.95
-										)
-									)
-								}
-							},
-							(error) => reject(error)
-						)
-					})
-				}
-
-				// Start with some initial progress
-				setLoadingProgress(0.1)
-
-				// Only load heavyweight models if not on mobile
-				if (!isMobile) {
-					await loadModelWithProgress('/decimated.glb', 40)
-					await loadModelWithProgress('/backrooms_long_hall.glb', 50)
-				}
-
-				if (isMounted) {
-					setLoadingProgress(1)
-					setTransitionStage('overlay')
-					setModelsLoaded(true)
-				}
-			} catch (error) {
-				console.error('Failed to load models:', error)
-				if (isMounted) {
-					setLoadError(error.message || 'Failed to load 3D models')
-				}
-			}
-		}
-
-		loadModels()
-
-		return () => {
-			isMounted = false
-		}
-	}, [isMobile])
-
 	// Display error if loading fails
 	if (loadError) {
 		return (
@@ -484,11 +349,6 @@ export default function Home() {
 				</button>
 			</div>
 		)
-	}
-
-	// Show loading indicator if not loaded yet
-	if (transitionStage === 'loading' || !modelsLoaded) {
-		return <Loading progress={loadingProgress * 100} />
 	}
 
 	// Render the full application once models are loaded
