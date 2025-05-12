@@ -158,7 +158,7 @@ export default function Home() {
 				// Create loaders for each model
 				const model1Promise = new Promise((resolve, reject) => {
 					gltfLoader.load(
-						'/decimated.glb',
+						'/decimate.glb',
 						(gltf) => resolve(gltf),
 						undefined,
 						(error) => reject(error)
