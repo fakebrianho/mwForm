@@ -24,6 +24,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import Loading from '@/components/Loading/Loading'
 import gsap from 'gsap'
+import { v4 as uuidv4 } from 'uuid'
 
 // This component will track mouse position inside the Canvas
 function MouseTracker({ setMousePosition }) {
@@ -130,6 +131,8 @@ export default function Home() {
 	const [transitionStage, setTransitionStage] = useState('loading') // 'loading', 'overlay', 'complete'
 	const fadeOverlayRef = useRef(null)
 	const [loadError, setLoadError] = useState(null)
+	const [questionCards, setQuestionCards] = useState([])
+	const [isDragging, setIsDragging] = useState(false)
 
 	// Load models effect - when complete, set to overlay stage instead of immediately showing content
 	useEffect(() => {
@@ -246,6 +249,117 @@ export default function Home() {
 		return <Loading />
 	}
 
+	// New implementation for draggable components
+	const createDraggableQuestion = (questionComponent) => {
+		const id = uuidv4()
+		return { id, component: questionComponent }
+	}
+	
+	// Function to handle drag operations
+	const handleDrag = (e, id, initialOffset = { x: 0, y: 0 }) => {
+		if (e.type === 'mousedown') {
+			// Create a copy when starting to drag
+			const rect = e.currentTarget.getBoundingClientRect()
+			setQuestionCards(prev => [
+				...prev, 
+				{
+					id: uuidv4(),
+					component: questionCards.find(card => card.id === id)?.component,
+					position: { 
+						x: rect.left, 
+						y: rect.top 
+					},
+					isDragging: false
+				}
+			])
+			
+			setIsDragging(true)
+			
+			// Track mouse movement for the dragged component
+			const onMouseMove = (moveEvent) => {
+				const draggedCard = document.getElementById(`draggable-${id}`)
+				if (draggedCard) {
+					const x = moveEvent.clientX - initialOffset.x
+					const y = moveEvent.clientY - initialOffset.y
+					draggedCard.style.transform = `translate(${x}px, ${y}px)`
+				}
+			}
+			
+			// Clean up when drag ends
+			const onMouseUp = () => {
+				setIsDragging(false)
+				document.removeEventListener('mousemove', onMouseMove)
+				document.removeEventListener('mouseup', onMouseUp)
+			}
+			
+			document.addEventListener('mousemove', onMouseMove)
+			document.addEventListener('mouseup', onMouseUp)
+		}
+	}
+	
+	// Wrapper component for draggable elements
+	const DraggableQuestion = ({ children, id }) => {
+		const handleMouseDown = (e) => {
+			// Calculate initial offset to maintain position during drag
+			const rect = e.currentTarget.getBoundingClientRect()
+			const offsetX = e.clientX - rect.left
+
+		setQuestionCards((prev) => [
+			...prev,
+			{
+				id,
+				component: questionComponent,
+				position,
+				isDragging: false,
+			},
+		])
+
+		return id
+	}
+
+	// Add this function to handle starting a drag
+	const handleDragStart = (id, initialPosition) => {
+		setDraggedId(id)
+
+		// Create a copy at the original position
+		const card = questionCards.find((card) => card.id === id)
+		if (card) {
+			createDraggableQuestion(card.component, initialPosition)
+		}
+	}
+
+	// Add this wrapper component
+	const DraggableQuestion = ({ children, id }) => {
+		const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
+
+		const bind = useDrag(({ down, movement: [mx, my], first, last }) => {
+			api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down })
+
+			if (first) {
+				handleDragStart(id, { x: mx, y: my })
+			}
+
+			if (last && draggedId === id) {
+				setDraggedId(null)
+			}
+		})
+
+		return (
+			<animated.div
+				{...bind()}
+				style={{
+					touchAction: 'none',
+					position: 'relative',
+					x,
+					y,
+					zIndex: draggedId === id ? 1000 : 1,
+				}}
+			>
+				{children}
+			</animated.div>
+		)
+	}
+
 	// Render the full application once models are loaded
 	return (
 		<div className={styles.page}>
@@ -325,61 +439,82 @@ export default function Home() {
 			<main className={styles.main}>
 				{showQuestions && (
 					<>
-						{stage === 0 && <Question1 setStage={setStage} />}
-						{stage >= 1 && (
-							<Question
-								setStage={setStage}
-								stage={'1'}
-								question={'Shop Name: '}
-								answerQuestion={setAnswer1}
-							/>
+						{stage === 0 && (
+							<DraggableQuestion
+								id={createDraggableQuestion(
+									<Question1 setStage={setStage} />,
+									{ x: 0, y: 0 }
+								)}
+							>
+								<Question1 setStage={setStage} />
+							</DraggableQuestion>
 						)}
-						{stage >= 2 && (
+						{stage === 1 && (
+							<DraggableQuestion
+								id={createDraggableQuestion(
+									<Question
+										setStage={setStage}
+										stage={stage}
+										question={'Shop Name: '}
+										answerQuestion={setAnswer1}
+									/>,
+									{ x: 0, y: 0 }
+								)}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 2 && (
 							<Question
 								setStage={setStage}
-								stage={'2'}
+								stage={stage}
 								question={'Instagram Handle: '}
 								answerQuestion={setAnswer2}
 							/>
 						)}
-						{stage >= 3 && (
+						{stage === 3 && (
 							<Question
 								setStage={setStage}
-								stage={'3'}
+								stage={stage}
 								question={'City: '}
 								answerQuestion={setAnswer3}
 							/>
 						)}
-						{stage >= 4 && (
+						{stage === 4 && (
 							<Question
 								setStage={setStage}
-								stage={'4'}
+								stage={stage}
 								question={
 									'If you know the full address: (This will not be public) '
 								}
 								answerQuestion={setAnswer4}
 							/>
 						)}
-						{stage >= 5 && (
+						{stage === 5 && (
 							<Question
 								setStage={setStage}
-								stage={'5'}
+								stage={stage}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
 							/>
 						)}
-						{stage >= 6 && (
+						{stage === 6 && (
 							<Question
 								setStage={setStage}
-								stage={'6'}
+								stage={stage}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
 							/>
 						)}
-						{stage >= 7 && (
+						{stage === 7 && (
 							<Question
 								setStage={setStage}
-								stage={'7'}
+								stage={stage}
 								question={
 									'Your email, if you want us to send you access to the database when its public.'
 								}
@@ -388,6 +523,21 @@ export default function Home() {
 						)}
 					</>
 				)}
+				{/* Render all the dragged copies */}
+				{questionCards.map((card) => (
+					<div
+						key={card.id}
+						style={{
+							position: 'absolute',
+							left: card.position.x,
+							top: card.position.y,
+							opacity: 0.7,
+							pointerEvents: 'none',
+						}}
+					>
+						{card.component}
+					</div>
+				))}
 				<div
 					style={{
 						width: '100%',

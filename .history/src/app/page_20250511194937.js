@@ -345,7 +345,7 @@ export default function Home() {
 						{stage >= 3 && (
 							<Question
 								setStage={setStage}
-								stage={'3'}
+								stage={'2'}
 								question={'City: '}
 								answerQuestion={setAnswer3}
 							/>
@@ -353,7 +353,7 @@ export default function Home() {
 						{stage >= 4 && (
 							<Question
 								setStage={setStage}
-								stage={'4'}
+								stage={stage}
 								question={
 									'If you know the full address: (This will not be public) '
 								}
@@ -363,7 +363,7 @@ export default function Home() {
 						{stage >= 5 && (
 							<Question
 								setStage={setStage}
-								stage={'5'}
+								stage={stage}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
 							/>
@@ -371,7 +371,7 @@ export default function Home() {
 						{stage >= 6 && (
 							<Question
 								setStage={setStage}
-								stage={'6'}
+								stage={stage}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
 							/>
@@ -379,7 +379,7 @@ export default function Home() {
 						{stage >= 7 && (
 							<Question
 								setStage={setStage}
-								stage={'7'}
+								stage={stage}
 								question={
 									'Your email, if you want us to send you access to the database when its public.'
 								}

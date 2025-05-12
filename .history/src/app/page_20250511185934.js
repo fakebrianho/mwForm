@@ -228,6 +228,16 @@ export default function Home() {
 		setShowQuestions(true)
 	}
 
+	// Debugging helper
+	useEffect(() => {
+		console.log("Current stage:", stage);
+	}, [stage]);
+	
+	// Handle question progression
+	const goToNextStage = (currentStage) => {
+		setStage(currentStage + 1);
+	};
+
 	// If there's a loading error, show error message
 	if (loadError) {
 		return (
@@ -324,62 +334,119 @@ export default function Home() {
 			</div>
 			<main className={styles.main}>
 				{showQuestions && (
+					<div className={styles.questionsContainer}>
+						{/* First question (intro) */}
+						{stage >= 0 && (
+							<div className={stage === 0 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question1 
+									setStage={() => goToNextStage(0)} 
+									disabled={stage !== 0}
+								/>
+							</div>
+						)}
+						
+						{/* Shop name question */}
+						{stage >= 1 && (
+							<div className={stage === 1 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(1)}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+									value={answer1}
+									disabled={stage !== 1}
+								/>
+							</div>
+						)}
+						
+						{/* Instagram handle question */}
+						{stage >= 2 && (
+							<div className={stage === 2 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(2)}
+									question={'Instagram Handle: '}
+									answerQuestion={setAnswer2}
+									value={answer2}
+									disabled={stage !== 2}
+								/>
+							</div>
+						)}
+						
+						{/* City question */}
+						{stage >= 3 && (
+							<div className={stage === 3 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(3)}
+									question={'City: '}
+									answerQuestion={setAnswer3}
+									value={answer3}
+									disabled={stage !== 3}
+								/>
+							</div>
+						)}
+						
+						{/* Address question */}
+						{stage >= 4 && (
+							<div className={stage === 4 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(4)}
+									question={'If you know the full address: (This will not be public) '}
+									answerQuestion={setAnswer4}
 					<>
 						{stage === 0 && <Question1 setStage={setStage} />}
-						{stage >= 1 && (
+						{stage === 1 && (
 							<Question
 								setStage={setStage}
-								stage={'1'}
+								stage={stage}
 								question={'Shop Name: '}
 								answerQuestion={setAnswer1}
 							/>
 						)}
-						{stage >= 2 && (
+						{stage === 2 && (
 							<Question
 								setStage={setStage}
-								stage={'2'}
+								stage={stage}
 								question={'Instagram Handle: '}
 								answerQuestion={setAnswer2}
 							/>
 						)}
-						{stage >= 3 && (
+						{stage === 3 && (
 							<Question
 								setStage={setStage}
-								stage={'3'}
+								stage={stage}
 								question={'City: '}
 								answerQuestion={setAnswer3}
 							/>
 						)}
-						{stage >= 4 && (
+						{stage === 4 && (
 							<Question
 								setStage={setStage}
-								stage={'4'}
+								stage={stage}
 								question={
 									'If you know the full address: (This will not be public) '
 								}
 								answerQuestion={setAnswer4}
 							/>
 						)}
-						{stage >= 5 && (
+						{stage === 5 && (
 							<Question
 								setStage={setStage}
-								stage={'5'}
+								stage={stage}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
 							/>
 						)}
-						{stage >= 6 && (
+						{stage === 6 && (
 							<Question
 								setStage={setStage}
-								stage={'6'}
+								stage={stage}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
 							/>
 						)}
-						{stage >= 7 && (
+						{stage === 7 && (
 							<Question
 								setStage={setStage}
-								stage={'7'}
+								stage={stage}
 								question={
 									'Your email, if you want us to send you access to the database when its public.'
 								}

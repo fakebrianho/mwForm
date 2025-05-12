@@ -24,6 +24,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import Loading from '@/components/Loading/Loading'
 import gsap from 'gsap'
+import { v4 as uuidv4 } from 'uuid'
 
 // This component will track mouse position inside the Canvas
 function MouseTracker({ setMousePosition }) {
@@ -130,6 +131,8 @@ export default function Home() {
 	const [transitionStage, setTransitionStage] = useState('loading') // 'loading', 'overlay', 'complete'
 	const fadeOverlayRef = useRef(null)
 	const [loadError, setLoadError] = useState(null)
+	const [questionCards, setQuestionCards] = useState([])
+	const [isDragging, setIsDragging] = useState(false)
 
 	// Load models effect - when complete, set to overlay stage instead of immediately showing content
 	useEffect(() => {
@@ -246,6 +249,82 @@ export default function Home() {
 		return <Loading />
 	}
 
+	// New implementation for draggable components
+	const createDraggableQuestion = (questionComponent) => {
+		const id = uuidv4()
+		return { id, component: questionComponent }
+	}
+
+	// Function to handle drag operations
+	const handleDrag = (e, id, initialOffset = { x: 0, y: 0 }) => {
+		if (e.type === 'mousedown') {
+			// Create a copy when starting to drag
+			const rect = e.currentTarget.getBoundingClientRect()
+			setQuestionCards((prev) => [
+				...prev,
+				{
+					id: uuidv4(),
+					component: questionCards.find((card) => card.id === id)
+						?.component,
+					position: {
+						x: rect.left,
+						y: rect.top,
+					},
+					isDragging: false,
+				},
+			])
+
+			setIsDragging(true)
+
+			// Track mouse movement for the dragged component
+			const onMouseMove = (moveEvent) => {
+				const draggedCard = document.getElementById(`draggable-${id}`)
+				if (draggedCard) {
+					const x = moveEvent.clientX - initialOffset.x
+					const y = moveEvent.clientY - initialOffset.y
+					draggedCard.style.transform = `translate(${x}px, ${y}px)`
+				}
+			}
+
+			// Clean up when drag ends
+			const onMouseUp = () => {
+				setIsDragging(false)
+				document.removeEventListener('mousemove', onMouseMove)
+				document.removeEventListener('mouseup', onMouseUp)
+			}
+
+			document.addEventListener('mousemove', onMouseMove)
+			document.addEventListener('mouseup', onMouseUp)
+		}
+	}
+
+	// Wrapper component for draggable elements
+	const DraggableQuestion = ({ children, id }) => {
+		const handleMouseDown = (e) => {
+			// Calculate initial offset to maintain position during drag
+			const rect = e.currentTarget.getBoundingClientRect()
+			const offsetX = e.clientX - rect.left
+			const offsetY = e.clientY - rect.top
+
+			handleDrag(e, id, { x: offsetX, y: offsetY })
+		}
+
+		return (
+			<div
+				id={`draggable-${id}`}
+				style={{
+					cursor: 'grab',
+					position: 'relative',
+					zIndex: isDragging ? 1000 : 1,
+					userSelect: 'none',
+				}}
+				onMouseDown={handleMouseDown}
+			>
+				{children}
+			</div>
+		)
+	}
+
 	// Render the full application once models are loaded
 	return (
 		<div className={styles.page}>
@@ -325,68 +404,194 @@ export default function Home() {
 			<main className={styles.main}>
 				{showQuestions && (
 					<>
-						{stage === 0 && <Question1 setStage={setStage} />}
-						{stage >= 1 && (
-							<Question
-								setStage={setStage}
-								stage={'1'}
-								question={'Shop Name: '}
-								answerQuestion={setAnswer1}
-							/>
-						)}
-						{stage >= 2 && (
-							<Question
-								setStage={setStage}
-								stage={'2'}
-								question={'Instagram Handle: '}
-								answerQuestion={setAnswer2}
-							/>
-						)}
-						{stage >= 3 && (
-							<Question
-								setStage={setStage}
-								stage={'3'}
-								question={'City: '}
-								answerQuestion={setAnswer3}
-							/>
-						)}
-						{stage >= 4 && (
-							<Question
-								setStage={setStage}
-								stage={'4'}
-								question={
-									'If you know the full address: (This will not be public) '
+						{stage === 0 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question1 setStage={setStage} />
+									).id
 								}
-								answerQuestion={setAnswer4}
-							/>
+							>
+								<Question1 setStage={setStage} />
+							</DraggableQuestion>
 						)}
-						{stage >= 5 && (
-							<Question
-								setStage={setStage}
-								stage={'5'}
-								question={'Shop Cut / Fee'}
-								answerQuestion={setAnswer5}
-							/>
-						)}
-						{stage >= 6 && (
-							<Question
-								setStage={setStage}
-								stage={'6'}
-								question={'Shop Email or Contact Info'}
-								answerQuestion={setAnswer6}
-							/>
-						)}
-						{stage >= 7 && (
-							<Question
-								setStage={setStage}
-								stage={'7'}
-								question={
-									'Your email, if you want us to send you access to the database when its public.'
+						{stage === 1 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={'Shop Name: '}
+											answerQuestion={setAnswer1}
+										/>
+									).id
 								}
-								answerQuestion={setAnswer7}
-							/>
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 2 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={'Instagram Handle: '}
+											answerQuestion={setAnswer2}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Instagram Handle: '}
+									answerQuestion={setAnswer2}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 3 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={'City: '}
+											answerQuestion={setAnswer3}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'City: '}
+									answerQuestion={setAnswer3}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 4 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={
+												'If you know the full address: (This will not be public) '
+											}
+											answerQuestion={setAnswer4}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'If you know the full address: (This will not be public) '
+									}
+									answerQuestion={setAnswer4}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 5 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={'Shop Cut / Fee'}
+											answerQuestion={setAnswer5}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Cut / Fee'}
+									answerQuestion={setAnswer5}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 6 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={
+												'Shop Email or Contact Info'
+											}
+											answerQuestion={setAnswer6}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Email or Contact Info'}
+									answerQuestion={setAnswer6}
+								/>
+							</DraggableQuestion>
+						)}
+						{stage === 7 && (
+							<DraggableQuestion
+								id={
+									createDraggableQuestion(
+										<Question
+											setStage={setStage}
+											stage={stage}
+											question={
+												'Your email, if you want us to send you access to the database when its public.'
+											}
+											answerQuestion={setAnswer7}
+										/>
+									).id
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'Your email, if you want us to send you access to the database when its public.'
+									}
+									answerQuestion={setAnswer7}
+								/>
+							</DraggableQuestion>
 						)}
 					</>
+				)}
+				{/* Render all the copied cards */}
+				{questionCards.map(
+					(card) =>
+						card.position && (
+							<div
+								key={card.id}
+								style={{
+									position: 'absolute',
+									left: card.position.x,
+									top: card.position.y,
+									opacity: 0.7,
+									pointerEvents: 'none',
+									zIndex: 0,
+								}}
+							>
+								{card.component}
+							</div>
+						)
 				)}
 				<div
 					style={{

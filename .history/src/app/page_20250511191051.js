@@ -192,6 +192,7 @@ export default function Home() {
 	}, [])
 
 	useEffect(() => {
+		console.log(stage)
 		if (stage === 8) {
 			const payload = {
 				shop_name: answer1,
@@ -325,66 +326,149 @@ export default function Home() {
 			<main className={styles.main}>
 				{showQuestions && (
 					<>
-						{stage === 0 && <Question1 setStage={setStage} />}
+						{stage >= 0 && (
+							<div
+								className={
+									stage === 0
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question1
+									setStage={setStage}
+									disabled={stage !== 0}
+								/>
+							</div>
+						)}
 						{stage >= 1 && (
-							<Question
-								setStage={setStage}
-								stage={'1'}
-								question={'Shop Name: '}
-								answerQuestion={setAnswer1}
-							/>
+							<div
+								className={
+									stage === 1
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+									value={answer1}
+									disabled={stage !== 1}
+								/>
+							</div>
 						)}
 						{stage >= 2 && (
-							<Question
-								setStage={setStage}
-								stage={'2'}
-								question={'Instagram Handle: '}
-								answerQuestion={setAnswer2}
-							/>
+							<div
+								className={
+									stage === 2
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Instagram Handle: '}
+									answerQuestion={setAnswer2}
+									value={answer2}
+									disabled={stage !== 2}
+								/>
+							</div>
 						)}
 						{stage >= 3 && (
-							<Question
-								setStage={setStage}
-								stage={'3'}
-								question={'City: '}
-								answerQuestion={setAnswer3}
-							/>
+							<div
+								className={
+									stage === 3
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'City: '}
+									answerQuestion={setAnswer3}
+									value={answer3}
+									disabled={stage !== 3}
+								/>
+							</div>
 						)}
 						{stage >= 4 && (
-							<Question
-								setStage={setStage}
-								stage={'4'}
-								question={
-									'If you know the full address: (This will not be public) '
+							<div
+								className={
+									stage === 4
+										? styles.activeQuestion
+										: styles.disabledQuestion
 								}
-								answerQuestion={setAnswer4}
-							/>
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'If you know the full address: (This will not be public) '
+									}
+									answerQuestion={setAnswer4}
+									value={answer4}
+									disabled={stage !== 4}
+								/>
+							</div>
 						)}
 						{stage >= 5 && (
-							<Question
-								setStage={setStage}
-								stage={'5'}
-								question={'Shop Cut / Fee'}
-								answerQuestion={setAnswer5}
-							/>
+							<div
+								className={
+									stage === 5
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Cut / Fee'}
+									answerQuestion={setAnswer5}
+									value={answer5}
+									disabled={stage !== 5}
+								/>
+							</div>
 						)}
 						{stage >= 6 && (
-							<Question
-								setStage={setStage}
-								stage={'6'}
-								question={'Shop Email or Contact Info'}
-								answerQuestion={setAnswer6}
-							/>
+							<div
+								className={
+									stage === 6
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Email or Contact Info'}
+									answerQuestion={setAnswer6}
+									value={answer6}
+									disabled={stage !== 6}
+								/>
+							</div>
 						)}
 						{stage >= 7 && (
-							<Question
-								setStage={setStage}
-								stage={'7'}
-								question={
-									'Your email, if you want us to send you access to the database when its public.'
+							<div
+								className={
+									stage === 7
+										? styles.activeQuestion
+										: styles.disabledQuestion
 								}
-								answerQuestion={setAnswer7}
-							/>
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'Your email, if you want us to send you access to the database when its public.'
+									}
+									answerQuestion={setAnswer7}
+									value={answer7}
+									disabled={stage !== 7}
+								/>
+							</div>
 						)}
 					</>
 				)}

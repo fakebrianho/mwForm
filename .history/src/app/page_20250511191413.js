@@ -192,6 +192,12 @@ export default function Home() {
 	}, [])
 
 	useEffect(() => {
+		console.log('Current stage:', stage)
+		console.log('Questions visible:', showQuestions)
+	}, [stage, showQuestions])
+
+	useEffect(() => {
+		console.log(stage)
 		if (stage === 8) {
 			const payload = {
 				shop_name: answer1,
@@ -244,6 +250,40 @@ export default function Home() {
 	// Show appropriate screen based on transition stage
 	if (transitionStage === 'loading') {
 		return <Loading />
+	}
+
+	// Inside your Home component, add this debugging function
+	const debugComponentRender = (componentName, isShown, stageLevel) => {
+		console.log(
+			`${componentName} - Should show: ${isShown}, Current stage: ${stage}, Required stage: ${stageLevel}`
+		)
+	}
+
+	// Add this near the top of your component
+	const stageDisplay = () => {
+		return (
+			<div
+				style={{
+					position: 'fixed',
+					top: '20px',
+					right: '20px',
+					zIndex: 9999,
+					background: 'rgba(0,0,0,0.7)',
+					color: 'white',
+					padding: '10px',
+					borderRadius: '5px',
+					fontFamily: 'monospace',
+				}}
+			>
+				<div>Stage: {stage}</div>
+				<div>
+					<button onClick={() => setStage(0)}>Stage 0</button>
+					<button onClick={() => setStage(1)}>Stage 1</button>
+					<button onClick={() => setStage(2)}>Stage 2</button>
+					<button onClick={() => setStage(3)}>Stage 3</button>
+				</div>
+			</div>
+		)
 	}
 
 	// Render the full application once models are loaded
@@ -325,66 +365,160 @@ export default function Home() {
 			<main className={styles.main}>
 				{showQuestions && (
 					<>
-						{stage === 0 && <Question1 setStage={setStage} />}
+						{stage >= 0 && (
+							<div
+								className={
+									stage === 0
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+								onClick={() =>
+									debugComponentRender('Question1', true, 0)
+								}
+							>
+								<Question1
+									setStage={setStage}
+									disabled={stage !== 0}
+								/>
+							</div>
+						)}
 						{stage >= 1 && (
-							<Question
-								setStage={setStage}
-								stage={'1'}
-								question={'Shop Name: '}
-								answerQuestion={setAnswer1}
-							/>
+							<div
+								className={
+									stage === 1
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+								style={{
+									border: '2px solid blue',
+									padding: '10px',
+									marginTop: '20px',
+									position: 'relative',
+									zIndex: 1100,
+									background: 'rgba(255,255,255,0.5)',
+								}}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+									value={answer1}
+									disabled={stage !== 1}
+								/>
+							</div>
 						)}
 						{stage >= 2 && (
-							<Question
-								setStage={setStage}
-								stage={'2'}
-								question={'Instagram Handle: '}
-								answerQuestion={setAnswer2}
-							/>
+							<div
+								className={
+									stage === 2
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Instagram Handle: '}
+									answerQuestion={setAnswer2}
+									value={answer2}
+									disabled={stage !== 2}
+								/>
+							</div>
 						)}
 						{stage >= 3 && (
-							<Question
-								setStage={setStage}
-								stage={'3'}
-								question={'City: '}
-								answerQuestion={setAnswer3}
-							/>
+							<div
+								className={
+									stage === 3
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'City: '}
+									answerQuestion={setAnswer3}
+									value={answer3}
+									disabled={stage !== 3}
+								/>
+							</div>
 						)}
 						{stage >= 4 && (
-							<Question
-								setStage={setStage}
-								stage={'4'}
-								question={
-									'If you know the full address: (This will not be public) '
+							<div
+								className={
+									stage === 4
+										? styles.activeQuestion
+										: styles.disabledQuestion
 								}
-								answerQuestion={setAnswer4}
-							/>
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'If you know the full address: (This will not be public) '
+									}
+									answerQuestion={setAnswer4}
+									value={answer4}
+									disabled={stage !== 4}
+								/>
+							</div>
 						)}
 						{stage >= 5 && (
-							<Question
-								setStage={setStage}
-								stage={'5'}
-								question={'Shop Cut / Fee'}
-								answerQuestion={setAnswer5}
-							/>
+							<div
+								className={
+									stage === 5
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Cut / Fee'}
+									answerQuestion={setAnswer5}
+									value={answer5}
+									disabled={stage !== 5}
+								/>
+							</div>
 						)}
 						{stage >= 6 && (
-							<Question
-								setStage={setStage}
-								stage={'6'}
-								question={'Shop Email or Contact Info'}
-								answerQuestion={setAnswer6}
-							/>
+							<div
+								className={
+									stage === 6
+										? styles.activeQuestion
+										: styles.disabledQuestion
+								}
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={'Shop Email or Contact Info'}
+									answerQuestion={setAnswer6}
+									value={answer6}
+									disabled={stage !== 6}
+								/>
+							</div>
 						)}
 						{stage >= 7 && (
-							<Question
-								setStage={setStage}
-								stage={'7'}
-								question={
-									'Your email, if you want us to send you access to the database when its public.'
+							<div
+								className={
+									stage === 7
+										? styles.activeQuestion
+										: styles.disabledQuestion
 								}
-								answerQuestion={setAnswer7}
-							/>
+							>
+								<Question
+									setStage={setStage}
+									stage={stage}
+									question={
+										'Your email, if you want us to send you access to the database when its public.'
+									}
+									answerQuestion={setAnswer7}
+									value={answer7}
+									disabled={stage !== 7}
+								/>
+							</div>
 						)}
 					</>
 				)}
@@ -427,6 +561,23 @@ export default function Home() {
 					</div>
 				</div>
 			</main>
+			<div
+				style={{
+					position: 'fixed',
+					bottom: '20px',
+					right: '20px',
+					background: 'rgba(0,0,0,0.7)',
+					color: 'white',
+					padding: '10px',
+					borderRadius: '5px',
+					fontFamily: 'monospace',
+					zIndex: 1500,
+				}}
+			>
+				Stage: {stage} | ShowQuestions: {showQuestions.toString()} |
+				Questions&gt;=1: {(stage >= 1).toString()}
+			</div>
+			{stageDisplay()}
 		</div>
 	)
 }

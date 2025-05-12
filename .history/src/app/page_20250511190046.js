@@ -85,7 +85,7 @@ function TexturedPlaneWithClick({ position, width, height, onClick }) {
 	)
 }
 
-// Simplified camera animation with a smaller distance
+// Camera animation component
 function CameraAnimation() {
 	const { camera } = useThree()
 	const initialized = useRef(false)
@@ -96,14 +96,14 @@ function CameraAnimation() {
 			const targetPosition = { x: 0, y: 0.5, z: 5 }
 
 			// Set initial position just a bit further back
-			camera.position.set(targetPosition.x, targetPosition.y, 8) // Start from z=8 instead of z=20
+			camera.position.set(targetPosition.x, targetPosition.y, 8)
 
 			// Create the animation with GSAP
 			gsap.to(camera.position, {
 				z: targetPosition.z,
-				duration: 2, // Shorter duration for subtler movement
+				duration: 2,
 				ease: 'power2.out',
-				delay: 0.2, // Start almost immediately after fade begins
+				delay: 0.2,
 			})
 
 			initialized.current = true
@@ -127,11 +127,21 @@ export default function Home() {
 	const windowWidth = useWindowWidth()
 	const [mousePosition, setMousePosition] = useState(new THREE.Vector2())
 	const [modelsLoaded, setModelsLoaded] = useState(false)
-	const [transitionStage, setTransitionStage] = useState('loading') // 'loading', 'overlay', 'complete'
+	const [transitionStage, setTransitionStage] = useState('loading')
 	const fadeOverlayRef = useRef(null)
 	const [loadError, setLoadError] = useState(null)
 
-	// Load models effect - when complete, set to overlay stage instead of immediately showing content
+	// Debugging helper
+	useEffect(() => {
+		console.log("Current stage:", stage)
+	}, [stage])
+
+	// Handle question progression
+	const goToNextStage = (currentStage) => {
+		setStage(currentStage + 1)
+	}
+
+	// Set models as loaded when both are ready
 	useEffect(() => {
 		let isMounted = true
 
@@ -191,6 +201,22 @@ export default function Home() {
 		}
 	}, [])
 
+	// Fade transition effect
+	useEffect(() => {
+		if (transitionStage === 'overlay' && fadeOverlayRef.current) {
+			// Fade out the black overlay
+			gsap.to(fadeOverlayRef.current, {
+				opacity: 0,
+				duration: 1.5,
+				ease: 'power2.inOut',
+				delay: 0.5,
+				onComplete: () => {
+					setTransitionStage('complete')
+				}
+			})
+		}
+	}, [transitionStage])
+
 	useEffect(() => {
 		if (stage === 8) {
 			const payload = {
@@ -206,28 +232,6 @@ export default function Home() {
 		}
 	}, [stage])
 
-	// Separate effect for the fade transition
-	useEffect(() => {
-		if (transitionStage === 'overlay' && fadeOverlayRef.current) {
-			// Fade out the black overlay
-			gsap.to(fadeOverlayRef.current, {
-				opacity: 0,
-				duration: 1.5,
-				ease: 'power2.inOut',
-				delay: 0.5, // Short delay before starting fade
-				onComplete: () => {
-					setTransitionStage('complete')
-				},
-			})
-		}
-	}, [transitionStage])
-
-	// Handle click on the TexturedPlane
-	const handlePlaneClick = (event) => {
-		event.stopPropagation()
-		setShowQuestions(true)
-	}
-
 	// If there's a loading error, show error message
 	if (loadError) {
 		return (
@@ -241,9 +245,15 @@ export default function Home() {
 		)
 	}
 
-	// Show appropriate screen based on transition stage
+	// Show loading screen until transition begins
 	if (transitionStage === 'loading') {
 		return <Loading />
+	}
+
+	// Handle click on the TexturedPlane
+	const handlePlaneClick = (event) => {
+		event.stopPropagation()
+		setShowQuestions(true)
 	}
 
 	// Render the full application once models are loaded
@@ -324,62 +334,134 @@ export default function Home() {
 			</div>
 			<main className={styles.main}>
 				{showQuestions && (
+					<div className={styles.questionsContainer}>
+						{/* First question (intro) */}
+						{stage >= 0 && (
+							<div className={stage === 0 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question1 
+									setStage={() => goToNextStage(0)} 
+									disabled={stage !== 0}
+								/>
+							</div>
+						)}
+						
+						{/* Shop name question */}
+						{stage >= 1 && (
+							<div className={stage === 1 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(1)}
+									question={'Shop Name: '}
+									answerQuestion={setAnswer1}
+									value={answer1}
+									disabled={stage !== 1}
+								/>
+							</div>
+						)}
+						
+						{/* Instagram handle question */}
+						{stage >= 2 && (
+							<div className={stage === 2 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(2)}
+									question={'Instagram Handle: '}
+									answerQuestion={setAnswer2}
+									value={answer2}
+									disabled={stage !== 2}
+								/>
+							</div>
+						)}
+						
+						{/* City question */}
+						{stage >= 3 && (
+							<div className={stage === 3 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(3)}
+									question={'City: '}
+									answerQuestion={setAnswer3}
+									value={answer3}
+									disabled={stage !== 3}
+								/>
+							</div>
+						)}
+						
+						{/* Address question */}
+						{stage >= 4 && (
+							<div className={stage === 4 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(4)}
+									question={'If you know the full address: (This will not be public) '}
+									answerQuestion={setAnswer4}
+									value={answer4}
+									disabled={stage !== 4}
+								/>
+							</div>
+						)}
+						
+						{/* Fee question */}
+						{stage >= 5 && (
+							<div className={stage === 5 ? styles.activeQuestion : styles.disabledQuestion}>
+								<Question
+									setStage={() => goToNextStage(5)}
+									question={'Shop Cut / Fee'}
+									answerQuestion={setAnswer5}
+									value={answer5}
+									disabled={stage !== 5}
 					<>
 						{stage === 0 && <Question1 setStage={setStage} />}
-						{stage >= 1 && (
+						{stage === 1 && (
 							<Question
 								setStage={setStage}
-								stage={'1'}
+								stage={stage}
 								question={'Shop Name: '}
 								answerQuestion={setAnswer1}
 							/>
 						)}
-						{stage >= 2 && (
+						{stage === 2 && (
 							<Question
 								setStage={setStage}
-								stage={'2'}
+								stage={stage}
 								question={'Instagram Handle: '}
 								answerQuestion={setAnswer2}
 							/>
 						)}
-						{stage >= 3 && (
+						{stage === 3 && (
 							<Question
 								setStage={setStage}
-								stage={'3'}
+								stage={stage}
 								question={'City: '}
 								answerQuestion={setAnswer3}
 							/>
 						)}
-						{stage >= 4 && (
+						{stage === 4 && (
 							<Question
 								setStage={setStage}
-								stage={'4'}
+								stage={stage}
 								question={
 									'If you know the full address: (This will not be public) '
 								}
 								answerQuestion={setAnswer4}
 							/>
 						)}
-						{stage >= 5 && (
+						{stage === 5 && (
 							<Question
 								setStage={setStage}
-								stage={'5'}
+								stage={stage}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
 							/>
 						)}
-						{stage >= 6 && (
+						{stage === 6 && (
 							<Question
 								setStage={setStage}
-								stage={'6'}
+								stage={stage}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
 							/>
 						)}
-						{stage >= 7 && (
+						{stage === 7 && (
 							<Question
 								setStage={setStage}
-								stage={'7'}
+								stage={stage}
 								question={
 									'Your email, if you want us to send you access to the database when its public.'
 								}
