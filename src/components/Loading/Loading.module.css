@@ -1,0 +1,61 @@
+.container {
+	width: 100%;
+	text-align: center;
+	color: white;
+	pointer-events: none;
+	z-index: 1000;
+}
+
+@keyframes flicker {
+	0% {
+		opacity: 1;
+	}
+	10% {
+		opacity: 0.8;
+	}
+	20% {
+		opacity: 1;
+	}
+	40% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 0.9;
+	}
+	80% {
+		opacity: 0.6;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.container h1 {
+	animation: flicker 2s infinite;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+	font-size: 3rem;
+	margin-bottom: 0.5rem;
+}
+
+.subtitle {
+	margin-top: 1rem;
+	opacity: 0.7;
+	text-align: center;
+	font-size: 1.2rem;
+	animation: fadeInOut 3s infinite;
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 0.8;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
