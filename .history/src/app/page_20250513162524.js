@@ -85,9 +85,9 @@ export default function Home() {
 						<Table
 							scale={0.4}
 							position={[
-								!isMobile ? 0.1 : 0.1,
+								!isMobile ? 0 : 0.5,
 								0.3,
-								!isMobile ? 3.35 : 1.5,
+								!isMobile ? 3.35 : -2,
 							]}
 							rotation={[0, 0, 0]}
 						/>

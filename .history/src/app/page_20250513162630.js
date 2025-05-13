@@ -87,7 +87,7 @@ export default function Home() {
 							position={[
 								!isMobile ? 0.1 : 0.1,
 								0.3,
-								!isMobile ? 3.35 : 1.5,
+								!isMobile ? 3.35 : 0,
 							]}
 							rotation={[0, 0, 0]}
 						/>
