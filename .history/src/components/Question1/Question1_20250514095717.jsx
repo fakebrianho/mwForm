@@ -89,9 +89,9 @@ function Question1(props) {
 					Guest Spot database submission
 				</div>
 				<div className='title-bar-controls'>
-					<button aria-label='Minimize' disabled />
-					<button aria-label='Maximize' disabled />
-					<button aria-label='Close' disabled />
+					<button aria-label='Minimize' />
+					<button aria-label='Maximize' />
+					<button aria-label='Close' onClick={handleClose} />
 				</div>
 			</div>
 
@@ -106,12 +106,9 @@ function Question1(props) {
 					information will be used to create a free and open source
 					database.{' '}
 				</p>
-				<div
-					className='field-row'
-					style={{ justifyContent: 'center', paddingTop: '10px' }}
-				>
-					<button onClick={() => handleSignUp()}>Start</button>
+				<div className='field-row' style={{ justifyContent: 'center' }}>
 					<button onClick={() => handleLogIn()}>Log In</button>
+					<button onClick={() => handleSignUp()}>Sign Up</button>
 				</div>
 				<div
 					className='field-row'

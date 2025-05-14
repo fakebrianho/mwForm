@@ -24,7 +24,6 @@ import { Table } from '@/components/Table/Table'
 export default function Home() {
 	const [stage, setStage] = useState(0)
 	const saveData = useSaveData()
-	const [answerCount, setAnswerCount] = useState(0)
 	const [answer1, setAnswer1] = useState('')
 	const [answer2, setAnswer2] = useState('')
 	const [answer3, setAnswer3] = useState('')
@@ -109,9 +108,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								answerCount={answerCount}
-								setAC={setAnswerCount}
-								currentStage={stage}
 								stage={'1'}
 								question={'Shop Name: '}
 								answerQuestion={setAnswer1}
@@ -121,7 +117,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'2'}
 								question={'Instagram Handle: '}
 								answerQuestion={setAnswer2}
@@ -131,7 +126,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'3'}
 								question={'City: '}
 								answerQuestion={setAnswer3}
@@ -141,7 +135,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'4'}
 								question={
 									'If you know the full address: (This will not be public) '
@@ -153,7 +146,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'5'}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
@@ -163,7 +155,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'6'}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
@@ -173,7 +164,6 @@ export default function Home() {
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
-								currentStage={stage}
 								stage={'7'}
 								question={
 									'Your email, if you want us to send you access to the database when its public.'

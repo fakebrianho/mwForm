@@ -1,6 +1,6 @@
 'use client'
 import '98.css'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
 import styles from './Question.module.css'
 
@@ -9,22 +9,9 @@ function Question2(props) {
 	const [isDragging, setIsDragging] = useState(false)
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 	const [input, setInput] = useState('')
-	const inputRef = useRef(null) // Add ref for input field
 	useEffect(() => {
 		setPosition(getRandomPosition())
 	}, [])
-
-	// Add an effect to focus on the input when the component mounts
-	useEffect(() => {
-		// Focus on input when component mounts and position is set
-		if (
-			position &&
-			inputRef.current &&
-			props.currentStage === parseInt(props.stage)
-		) {
-			inputRef.current.focus()
-		}
-	}, [position, props.currentStage, props.stage])
 
 	// Handle mouse down event to start dragging
 	const handleMouseDown = (e) => {
@@ -105,10 +92,8 @@ function Question2(props) {
 		props.answerQuestion(input)
 		console.log('inner stage', props.stage)
 		console.log('current stage', props.currentStage)
-		if (props.stage >= props.currentStage) {
-			props.setPixel((prev) => (prev + 5) * 1.25)
-			props.setStage((prev) => prev + 1)
-		}
+		props.setStage((prev) => prev + 1)
+		props.setPixel((prev) => (prev + 5) * 1.5)
 	}
 
 	if (!position) {
@@ -148,7 +133,6 @@ function Question2(props) {
 							id='question1'
 							type='text'
 							onChange={(e) => setInput(e.target.value)}
-							ref={inputRef}
 						/>
 						<button type='submit'>Submit</button>
 					</div>

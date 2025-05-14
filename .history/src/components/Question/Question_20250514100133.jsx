@@ -2,13 +2,13 @@
 import '98.css'
 import React, { useState, useEffect } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
+import styles from './Question.module.css'
 
-function Question1(props) {
+function Question2(props) {
 	const [position, setPosition] = useState(null) // Initialize position as null
 	const [isDragging, setIsDragging] = useState(false)
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-	const [isVisible, setIsVisible] = useState(true) // State for visibility
-
+	const [input, setInput] = useState('')
 	useEffect(() => {
 		setPosition(getRandomPosition())
 	}, [])
@@ -37,20 +37,6 @@ function Question1(props) {
 		setIsDragging(false)
 	}
 
-	// Handle close button click
-	const handleClose = (e) => {
-		e.stopPropagation() // Prevent triggering the drag handler
-		props.setStage(1)
-		// props.setPixel((prev) => (prev + 10) * 1.5)
-		// setIsVisible(false)
-	}
-	const handleSignUp = (e) => {
-		props.setStage(1)
-	}
-	const handleLogIn = (e) => {
-		console.log('loggin in!')
-	}
-	// Add and remove event listeners
 	useEffect(() => {
 		if (isDragging) {
 			document.addEventListener('mousemove', handleMouseMove)
@@ -66,7 +52,14 @@ function Question1(props) {
 		}
 	}, [isDragging, dragOffset])
 
-	if (!position || !isVisible) {
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		props.answerQuestion(input)
+		props.setStage((prev) => prev + 1)
+		props.setPixel((prev) => (prev + 10) * 1.5)
+	}
+
+	if (!position) {
 		return null // Or a loading indicator
 	}
 
@@ -74,7 +67,7 @@ function Question1(props) {
 		<div
 			style={{
 				width: '50vw',
-				paddingBottom: 10,
+				padding: props.padding || 0,
 				position: 'absolute',
 				left: `${position.x}px`,
 				top: `${position.y}px`,
@@ -85,41 +78,34 @@ function Question1(props) {
 			onMouseDown={handleMouseDown}
 		>
 			<div className='title-bar'>
-				<div className='title-bar-text'>
-					Guest Spot database submission
-				</div>
+				<div className='title-bar-text'>Question {props.stage}: </div>
 				<div className='title-bar-controls'>
-					<button aria-label='Minimize' disabled />
-					<button aria-label='Maximize' disabled />
-					<button aria-label='Close' disabled />
+					<button aria-label='Minimize' />
+					<button aria-label='Maximize' />
+					<button aria-label='Close' />
 				</div>
 			</div>
 
 			<div className='window-body'>
-				<p style={{ textAlign: 'center' }}>
-					This form was made to help tattoo artists connect with shops
-					in other cities for guest spots. Accumulating this
-					information has potential to be powerful in helping artists
-					make money while traveling regionally or abroad. We hope
-					this results in more artists feeling comfortable traveling
-					and sharing/learning from peers in other cities. This
-					information will be used to create a free and open source
-					database.{' '}
-				</p>
-				<div
-					className='field-row'
-					style={{ justifyContent: 'center', paddingTop: '10px' }}
-				>
-					<button onClick={() => handleSignUp()}>Start</button>
-					<button onClick={() => handleLogIn()}>Log In</button>
-				</div>
-				<div
-					className='field-row'
-					style={{ justifyContent: 'center' }}
-				></div>
+				<form onSubmit={handleSubmit}>
+					<div className='field-row'>
+						<label htmlFor='question1'>{props.question}</label>
+						<input
+							className={styles.input}
+							id='question1'
+							type='text'
+							onChange={(e) => setInput(e.target.value)}
+						/>
+						<button type='submit'>Submit</button>
+					</div>
+					<div
+						className='field-row'
+						style={{ justifyContent: 'center' }}
+					></div>
+				</form>
 			</div>
 		</div>
 	)
 }
 
-export default Question1
+export default Question2

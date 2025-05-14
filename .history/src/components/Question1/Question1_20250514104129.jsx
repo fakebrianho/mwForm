@@ -110,8 +110,8 @@ function Question1(props) {
 					className='field-row'
 					style={{ justifyContent: 'center', paddingTop: '10px' }}
 				>
-					<button onClick={() => handleSignUp()}>Start</button>
 					<button onClick={() => handleLogIn()}>Log In</button>
+					<button onClick={() => handleSignUp()}>Start</button>
 				</div>
 				<div
 					className='field-row'

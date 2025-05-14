@@ -41,15 +41,10 @@ function Question1(props) {
 	const handleClose = (e) => {
 		e.stopPropagation() // Prevent triggering the drag handler
 		props.setStage(1)
-		// props.setPixel((prev) => (prev + 10) * 1.5)
+		props.setPixel((prev) => prev * 1.5)
 		// setIsVisible(false)
 	}
-	const handleSignUp = (e) => {
-		props.setStage(1)
-	}
-	const handleLogIn = (e) => {
-		console.log('loggin in!')
-	}
+
 	// Add and remove event listeners
 	useEffect(() => {
 		if (isDragging) {
@@ -89,9 +84,9 @@ function Question1(props) {
 					Guest Spot database submission
 				</div>
 				<div className='title-bar-controls'>
-					<button aria-label='Minimize' disabled />
-					<button aria-label='Maximize' disabled />
-					<button aria-label='Close' disabled />
+					<button aria-label='Minimize' />
+					<button aria-label='Maximize' />
+					<button aria-label='Close' onClick={handleClose} />
 				</div>
 			</div>
 
@@ -106,13 +101,6 @@ function Question1(props) {
 					information will be used to create a free and open source
 					database.{' '}
 				</p>
-				<div
-					className='field-row'
-					style={{ justifyContent: 'center', paddingTop: '10px' }}
-				>
-					<button onClick={() => handleSignUp()}>Start</button>
-					<button onClick={() => handleLogIn()}>Log In</button>
-				</div>
 				<div
 					className='field-row'
 					style={{ justifyContent: 'center' }}

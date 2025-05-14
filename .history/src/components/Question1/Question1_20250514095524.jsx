@@ -45,9 +45,11 @@ function Question1(props) {
 		// setIsVisible(false)
 	}
 	const handleSignUp = (e) => {
+		e.stopPropagation()
 		props.setStage(1)
 	}
 	const handleLogIn = (e) => {
+		e.stopPropagation()
 		console.log('loggin in!')
 	}
 	// Add and remove event listeners
@@ -89,9 +91,9 @@ function Question1(props) {
 					Guest Spot database submission
 				</div>
 				<div className='title-bar-controls'>
-					<button aria-label='Minimize' disabled />
-					<button aria-label='Maximize' disabled />
-					<button aria-label='Close' disabled />
+					<button aria-label='Minimize' />
+					<button aria-label='Maximize' />
+					<button aria-label='Close' onClick={handleClose} />
 				</div>
 			</div>
 
@@ -106,12 +108,9 @@ function Question1(props) {
 					information will be used to create a free and open source
 					database.{' '}
 				</p>
-				<div
-					className='field-row'
-					style={{ justifyContent: 'center', paddingTop: '10px' }}
-				>
-					<button onClick={() => handleSignUp()}>Start</button>
-					<button onClick={() => handleLogIn()}>Log In</button>
+				<div className='field-row' style={{ justifyContent: 'center' }}>
+					<button onClick={() => handleLogIn(e)}>Log In</button>
+					<button onClick={() =>)}>Sign Up</button>
 				</div>
 				<div
 					className='field-row'
