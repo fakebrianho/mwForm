@@ -17,9 +17,9 @@ function Blockers(props) {
 				ease: 'power2.inOut',
 				onComplete: () => {
 					props.setShow(true)
+					setShouldAnimateCamera(true)
 				},
 			})
-			setShouldAnimateCamera(true)
 		}
 	}, [props.intro])
 	useEffect(() => {

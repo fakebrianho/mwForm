@@ -1,14 +1,10 @@
 import React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useIntroAnimation } from '@/app/hooks/useIntro'
 
 function Blockers(props) {
 	const meshRef = useRef()
-	const [shouldAnimateCamera, setShouldAnimateCamera] = useState(false)
-
-	useIntroAnimation(shouldAnimateCamera)
-
 	useEffect(() => {
 		if (meshRef.current && props.intro) {
 			gsap.to(meshRef.current.material, {
@@ -19,8 +15,8 @@ function Blockers(props) {
 					props.setShow(true)
 				},
 			})
-			setShouldAnimateCamera(true)
 		}
+		useIntroAnimation()
 	}, [props.intro])
 	useEffect(() => {
 		if (meshRef.current) {

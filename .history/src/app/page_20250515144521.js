@@ -59,7 +59,7 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
-				<Canvas camera={{ position: [0, 0.1, 6] }}>
+				<Canvas camera={{ position: [0, 0.1, 8] }}>
 					<EffectComposer>
 						<Pixelation granularity={pixelCount} />
 						<Noise opacity={0.02} />

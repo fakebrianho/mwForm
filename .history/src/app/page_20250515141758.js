@@ -59,7 +59,7 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
-				<Canvas camera={{ position: [0, 0.1, 6] }}>
+				<Canvas camera={{ position: [0, 0.1, 5] }}>
 					<EffectComposer>
 						<Pixelation granularity={pixelCount} />
 						<Noise opacity={0.02} />
@@ -96,7 +96,7 @@ export default function Home() {
 				</Canvas>
 			</div>
 			<main className={styles.main}>
-				{start && !intro && <Enter setIntro={setIntro} />}
+				{start && <Enter setIntro={setIntro} />}
 				{showQuestions && (
 					<>
 						{stage === 0 && (

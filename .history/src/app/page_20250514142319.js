@@ -27,7 +27,6 @@ export default function Home() {
 	const saveData = useSaveData()
 	const [answerCount, setAnswerCount] = useState(0)
 	const [intro, setIntro] = useState(false)
-	const [start, setStart] = useState(false)
 	const [answer1, setAnswer1] = useState('')
 	const [answer2, setAnswer2] = useState('')
 	const [answer3, setAnswer3] = useState('')
@@ -59,18 +58,13 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
-				<Canvas camera={{ position: [0, 0.1, 6] }}>
+				<Canvas camera={{ position: [0, 0.1, 5] }}>
 					<EffectComposer>
 						<Pixelation granularity={pixelCount} />
 						<Noise opacity={0.02} />
 					</EffectComposer>
 					<Suspense fallback={<Loading />}>
-						<Blockers
-							setShow={setShowQuestions}
-							setStart={setStart}
-							intro={intro}
-							setIntro={setIntro}
-						/>
+						<Blockers setStart={setShowQuestions} />
 						<OrbitControls
 							enableZoom={false}
 							enableDamping={true}
@@ -96,7 +90,7 @@ export default function Home() {
 				</Canvas>
 			</div>
 			<main className={styles.main}>
-				{start && !intro && <Enter setIntro={setIntro} />}
+				{intro && <Enter />}
 				{showQuestions && (
 					<>
 						{stage === 0 && (
