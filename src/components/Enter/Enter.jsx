@@ -25,7 +25,12 @@ function Enter(props) {
 
 			<div className='window-body'>
 				<div className='field-row' style={{ justifyContent: 'center' }}>
-					<button onClick={() => props.setIntro(true)}>ENTER</button>
+					<button
+						style={{ fontSize: '18px' }}
+						onClick={() => props.setIntro(true)}
+					>
+						ENTER
+					</button>
 				</div>
 				<div
 					className='field-row'

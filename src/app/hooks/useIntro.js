@@ -1,6 +1,7 @@
 import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useRef, useEffect } from 'react'
+import { Howl, Howler } from 'howler'
 
 // Register the CustomEase plugin
 
@@ -15,6 +16,17 @@ export const useIntroAnimation = (shouldAnimate = false) => {
 		if (!shouldAnimate) return
 
 		// Create custom ease-in-quad based on the cubic-bezier values
+
+		var sound = new Howl({
+			src: ['Database_music.wav'],
+			autoplay: true,
+			loop: true,
+			volume: 0.5,
+			onend: function () {
+				console.log('Finished!')
+			},
+		})
+		sound.play()
 
 		tl.current = gsap.timeline()
 		tl.current.to(camera.position, {

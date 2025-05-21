@@ -96,7 +96,7 @@ function Question1(props) {
 			</div>
 
 			<div className='window-body'>
-				<p style={{ textAlign: 'center' }}>
+				<p style={{ textAlign: 'center', fontSize: '18px' }}>
 					This form was made to help tattoo artists connect with shops
 					in other cities for guest spots. Accumulating this
 					information has potential to be powerful in helping artists
@@ -110,8 +110,18 @@ function Question1(props) {
 					className='field-row'
 					style={{ justifyContent: 'center', paddingTop: '10px' }}
 				>
-					<button onClick={() => handleSignUp()}>Start</button>
-					<button onClick={() => handleLogIn()}>Log In</button>
+					<button
+						style={{ fontSize: '18px' }}
+						onClick={() => handleSignUp()}
+					>
+						Start
+					</button>
+					<button
+						style={{ fontSize: '18px' }}
+						onClick={() => handleLogIn()}
+					>
+						Log In
+					</button>
 				</div>
 				<div
 					className='field-row'

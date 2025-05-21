@@ -3,6 +3,18 @@ import '98.css'
 import React, { useState, useEffect, useRef } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
 import styles from './Question.module.css'
+import { Howl } from 'howler'
+
+// Modified playAudio function that doesn't stop all sounds
+function playAudio(url) {
+	var sound = new Howl({
+		src: [url],
+		volume: 0.7,
+	})
+	console.log(sound)
+	sound.play()
+	return sound // Return the sound instance
+}
 
 function Question2(props) {
 	const [position, setPosition] = useState(null) // Initialize position as null
@@ -10,6 +22,7 @@ function Question2(props) {
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 	const [input, setInput] = useState('')
 	const inputRef = useRef(null) // Add ref for input field
+	const soundRef = useRef(null) // Add ref for the sound instance
 	useEffect(() => {
 		setPosition(getRandomPosition())
 	}, [])
@@ -23,8 +36,25 @@ function Question2(props) {
 			props.currentStage === parseInt(props.stage)
 		) {
 			inputRef.current.focus()
+
+			// Play the audio and store the instance
+			if (props.url) {
+				// If there's a previous question sound, stop it
+				if (soundRef.current) {
+					soundRef.current.stop()
+				}
+				// Create and play new sound
+				soundRef.current = playAudio(props.url)
+			}
 		}
-	}, [position, props.currentStage, props.stage])
+
+		// Cleanup function to stop only this component's sound
+		return () => {
+			if (soundRef.current) {
+				soundRef.current.stop()
+			}
+		}
+	}, [position, props.currentStage, props.stage, props.url])
 
 	// Handle mouse down event to start dragging
 	const handleMouseDown = (e) => {
@@ -102,12 +132,12 @@ function Question2(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		props.answerQuestion(input)
-		console.log('inner stage', props.stage)
-		console.log('current stage', props.currentStage)
-		if (props.stage >= props.currentStage) {
-			props.setPixel((prev) => (prev + 5) * 1.25)
-			props.setStage((prev) => prev + 1)
+		if (input.length > 0) {
+			props.answerQuestion(input)
+			if (props.stage >= props.currentStage) {
+				props.setPixel((prev) => (prev + 5) * 1.25)
+				props.setStage((prev) => prev + 1)
+			}
 		}
 	}
 
@@ -124,14 +154,17 @@ function Question2(props) {
 				left: `${position.x}px`,
 				top: `${position.y}px`,
 				cursor: isDragging ? 'grabbing' : 'grab',
+				// fontSize: '24px',
 				zIndex: 1000,
 			}}
 			className='window'
 			onMouseDown={handleMouseDown}
 			onTouchStart={handleTouchStart}
 		>
-			<div className='title-bar'>
-				<div className='title-bar-text'>Question {props.stage}: </div>
+			<div className='title-bar' style={{ fontSize: '20px' }}>
+				<div className='title-bar-text' style={{ fontSize: '18px' }}>
+					Question {props.stage}:{' '}
+				</div>
 				<div className='title-bar-controls'>
 					<button aria-label='Minimize' />
 					<button aria-label='Maximize' />
@@ -141,16 +174,21 @@ function Question2(props) {
 
 			<div className='window-body'>
 				<form onSubmit={handleSubmit}>
-					<div className='field-row'>
-						<label htmlFor='question1'>{props.question}</label>
+					<div className='field-row' style={{ fontSize: '18px' }}>
+						<label style={{ fontSize: '18px' }} htmlFor='question1'>
+							{props.question}
+						</label>
 						<input
+							style={{ fontSize: '18px' }}
 							className={styles.input}
 							id='question1'
 							type='text'
 							onChange={(e) => setInput(e.target.value)}
 							ref={inputRef}
 						/>
-						<button type='submit'>Submit</button>
+						<button style={{ fontSize: '18px' }} type='submit'>
+							Submit
+						</button>
 					</div>
 					<div
 						className='field-row'

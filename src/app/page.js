@@ -13,14 +13,18 @@ import Loading from '@/components/Loading/Loading'
 import Blockers from '@/components/Blocker/Blockers'
 import { isMobile } from 'react-device-detect'
 import Enter from '@/components/Enter/Enter'
+import { useExitAnimation } from './hooks/useExit'
 
 import {
 	Bloom,
+	Glitch,
 	Pixelation,
 	EffectComposer,
 	Noise,
 } from '@react-three/postprocessing'
 import { Table } from '@/components/Table/Table'
+import { GlitchMode } from 'postprocessing'
+import { Vector2 } from 'three'
 
 export default function Home() {
 	const [stage, setStage] = useState(0)
@@ -35,12 +39,16 @@ export default function Home() {
 	const [answer5, setAnswer5] = useState('')
 	const [answer6, setAnswer6] = useState('')
 	const [answer7, setAnswer7] = useState('')
+	const [formErrors, setFormErrors] = useState({})
 	const windowWidth = useWindowWidth()
 	const [pixelCount, setPixelCount] = useState(0)
 	const [showQuestions, setShowQuestions] = useState(false)
-	const handlePlaneClick = (event) => {
-		event.stopPropagation()
-		setShowQuestions(true)
+	const { ExitAnimation, isPlaying, startAnimation } = useExitAnimation()
+	const [glitchOut, setGlitchOut] = useState(false)
+	const handleAnimationComplete = () => {
+		console.log('Animation is complete!')
+		setGlitchOut(true)
+		// Do whatever you need when animation finishes
 	}
 	useEffect(() => {
 		if (stage === 8) {
@@ -54,8 +62,9 @@ export default function Home() {
 				email: answer7,
 			}
 			saveData.mutate(payload)
+			startAnimation(handleAnimationComplete)
 		}
-	}, [stage])
+	}, [stage, answer1, answer2, answer3, answer4, answer5, answer6, answer7])
 	return (
 		<div className={styles.page}>
 			<div id='canvas-container'>
@@ -63,6 +72,16 @@ export default function Home() {
 					<EffectComposer>
 						<Pixelation granularity={pixelCount} />
 						<Noise opacity={0.02} />
+						{glitchOut && (
+							<Glitch
+								delay={[0.3, 0.5]} // min and max glitch delay
+								duration={[0.6, 1.0]} // min and max glitch duration
+								strength={[0.8, 1.0]} // min and max glitch strength
+								mode={GlitchMode.CONSTANT_WILD} // glitch mode
+								active // turn on/off the effect (switches between "mode" prop and GlitchMode.DISABLED)
+								ratio={0.35} // Threshold for strong glitches, 0 - no weak glitches, 1 - no strong glitches.
+							/>
+						)}
 					</EffectComposer>
 					<Suspense fallback={<Loading />}>
 						<Blockers
@@ -112,29 +131,35 @@ export default function Home() {
 								answerCount={answerCount}
 								setAC={setAnswerCount}
 								currentStage={stage}
+								url={'question_1.wav'}
 								stage={'1'}
 								question={'Shop Name: '}
 								answerQuestion={setAnswer1}
+								error={formErrors.answer1}
 							/>
 						)}
 						{stage >= 2 && (
 							<Question
 								setPixel={setPixelCount}
+								url={'question_2.wav'}
 								setStage={setStage}
 								currentStage={stage}
 								stage={'2'}
 								question={'Instagram Handle: '}
 								answerQuestion={setAnswer2}
+								error={formErrors.answer2}
 							/>
 						)}
 						{stage >= 3 && (
 							<Question
 								setPixel={setPixelCount}
 								setStage={setStage}
+								url={'question_3.wav'}
 								currentStage={stage}
 								stage={'3'}
 								question={'City: '}
 								answerQuestion={setAnswer3}
+								error={formErrors.answer3}
 							/>
 						)}
 						{stage >= 4 && (
@@ -143,6 +168,7 @@ export default function Home() {
 								setStage={setStage}
 								currentStage={stage}
 								stage={'4'}
+								url={'question_4.wav'}
 								question={
 									'If you know the full address: (This will not be public) '
 								}
@@ -154,24 +180,29 @@ export default function Home() {
 								setPixel={setPixelCount}
 								setStage={setStage}
 								currentStage={stage}
+								url={'question_5.wav'}
 								stage={'5'}
 								question={'Shop Cut / Fee'}
 								answerQuestion={setAnswer5}
+								error={formErrors.answer5}
 							/>
 						)}
 						{stage >= 6 && (
 							<Question
 								setPixel={setPixelCount}
+								url={'question_6.wav'}
 								setStage={setStage}
 								currentStage={stage}
 								stage={'6'}
 								question={'Shop Email or Contact Info'}
 								answerQuestion={setAnswer6}
+								error={formErrors.answer6}
 							/>
 						)}
 						{stage >= 7 && (
 							<Question
 								setPixel={setPixelCount}
+								url={'question_7.wav'}
 								setStage={setStage}
 								currentStage={stage}
 								stage={'7'}
@@ -179,6 +210,7 @@ export default function Home() {
 									'Your email, if you want us to send you access to the database when its public.'
 								}
 								answerQuestion={setAnswer7}
+								error={formErrors.answer7}
 							/>
 						)}
 						<div
@@ -220,6 +252,7 @@ export default function Home() {
 						</div>
 					</>
 				)}
+				{isPlaying && <ExitAnimation />}
 			</main>
 		</div>
 	)
