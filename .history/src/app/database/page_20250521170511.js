@@ -153,7 +153,6 @@ export default function Home() {
 								value={selectedCity}
 								onChange={(e) => handleCitySearch(e)}
 								className='select'
-								style={{ color: 'black' }}
 							>
 								{uniqueCities.map((city) => (
 									<option

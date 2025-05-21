@@ -153,14 +153,9 @@ export default function Home() {
 								value={selectedCity}
 								onChange={(e) => handleCitySearch(e)}
 								className='select'
-								style={{ color: 'black' }}
 							>
 								{uniqueCities.map((city) => (
-									<option
-										key={city}
-										value={city}
-										style={{ color: 'black' }}
-									>
+									<option key={city} value={city}>
 										{city}
 									</option>
 								))}
@@ -186,105 +181,46 @@ export default function Home() {
 							className='sunken-panel'
 							style={{
 								display: 'flex',
-								flexDirection: 'column',
+								justifyContent: 'center',
+								overflowX: 'auto',
 								margin: '0 auto',
 								width: '90%',
 								height: 'calc(100vh - 200px)',
 								overflowY: 'auto',
-								overflowX: 'auto',
 							}}
 						>
-							{filteredData.length > 0 && (
-								<div
-									style={{
-										padding: '10px',
-										backgroundColor: '#f0f0f0',
-										fontSize: '10px',
-										whiteSpace: 'pre-wrap',
-										marginBottom: '10px',
-										display: 'none',
-									}}
-								>
-									Data keys:{' '}
-									{Object.keys(filteredData[0]).join(', ')}
-								</div>
-							)}
-
 							<table
 								style={{
-									borderCollapse: 'collapse',
-									width: '100%',
-									textAlign: 'left',
+									margin: '0 auto',
+									textAlign: 'center',
+									borderCollapse: 'separate',
+									borderSpacing: '0',
 								}}
 							>
 								<thead>
 									<tr>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											City
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Shop Name
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Contact
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Email
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Fee
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Instagram
-										</th>
+										{[
+											'City',
+											'Contact',
+											'Email',
+											'Fee',
+											'Instagram',
+											'Shop Name',
+										].map((header) => (
+											<th
+												key={header}
+												style={{
+													minWidth: '150px',
+													padding: '8px',
+													position: 'relative',
+													backgroundColor: '#c0c0c0',
+													borderBottom:
+														'1px solid #888',
+												}}
+											>
+												{header}
+											</th>
+										))}
 									</tr>
 								</thead>
 								<tbody>
@@ -293,75 +229,60 @@ export default function Home() {
 											<tr key={item._id}>
 												<td
 													style={{
+														width: '150px',
+														minWidth: '150px',
+														overflow: 'hidden',
+														textOverflow:
+															'ellipsis',
+														whiteSpace: 'nowrap',
 														padding: '8px',
 														borderBottom:
 															'1px solid #ddd',
-														whiteSpace: 'nowrap',
 													}}
 												>
-													{item.City}
+													{/* Try different case variations or check if property exists */}
+													{item.City ||
+														item.city ||
+														/* Show available keys if City is missing */
+														(item.City ===
+															undefined &&
+															`Missing: Available keys: ${Object.keys(
+																item
+															).join(', ')}`)}
 												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.shop_name}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Contact}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Email}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Fee}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Instagram}
-												</td>
+												{[
+													'City',
+													'Contact',
+													'Email',
+													'Fee',
+													'Instagram',
+													'shop_name',
+												].map((field) => (
+													<td
+														key={field}
+														style={{
+															minWidth: '150px',
+															overflow: 'hidden',
+															textOverflow:
+																'ellipsis',
+															whiteSpace:
+																'nowrap',
+															padding: '8px',
+															borderBottom:
+																'1px solid #ddd',
+														}}
+													>
+														{/* Use field as the key to access property, but handle shop_name special case */}
+														{field === 'shop_name'
+															? item[field]
+															: item[field]}
+													</td>
+												))}
 											</tr>
 										))
 									) : (
 										<tr>
-											<td
-												colSpan='6'
-												style={{
-													padding: '8px',
-													textAlign: 'center',
-												}}
-											>
+											<td colSpan='6'>
 												No matching results found
 											</td>
 										</tr>

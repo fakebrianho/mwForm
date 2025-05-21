@@ -153,14 +153,9 @@ export default function Home() {
 								value={selectedCity}
 								onChange={(e) => handleCitySearch(e)}
 								className='select'
-								style={{ color: 'black' }}
 							>
 								{uniqueCities.map((city) => (
-									<option
-										key={city}
-										value={city}
-										style={{ color: 'black' }}
-									>
+									<option key={city} value={city}>
 										{city}
 									</option>
 								))}
@@ -239,17 +234,6 @@ export default function Home() {
 												top: 0,
 											}}
 										>
-											Shop Name
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
 											Contact
 										</th>
 										<th
@@ -285,6 +269,17 @@ export default function Home() {
 										>
 											Instagram
 										</th>
+										<th
+											style={{
+												padding: '8px',
+												backgroundColor: '#c0c0c0',
+												minWidth: '150px',
+												position: 'sticky',
+												top: 0,
+											}}
+										>
+											Shop Name
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -300,16 +295,6 @@ export default function Home() {
 													}}
 												>
 													{item.City}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.shop_name}
 												</td>
 												<td
 													style={{
@@ -350,6 +335,16 @@ export default function Home() {
 													}}
 												>
 													{item.Instagram}
+												</td>
+												<td
+													style={{
+														padding: '8px',
+														borderBottom:
+															'1px solid #ddd',
+														whiteSpace: 'nowrap',
+													}}
+												>
+													{item.shop_name}
 												</td>
 											</tr>
 										))

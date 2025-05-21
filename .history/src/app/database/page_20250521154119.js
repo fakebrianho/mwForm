@@ -29,8 +29,8 @@ export default function Home() {
 	// Extract unique cities from data and create Fuse instance
 	useEffect(() => {
 		if (queryData && Array.isArray(queryData)) {
-			// Updated to match "City" with capital C
-			const cities = [...new Set(queryData.map((item) => item.City))]
+			// Get all unique cities
+			const cities = [...new Set(queryData.map((item) => item.city))]
 
 			// Configure Fuse for fuzzy matching
 			const fuseOptions = {
@@ -48,22 +48,22 @@ export default function Home() {
 	// Extract unique cities from data (for dropdown)
 	const uniqueCities =
 		queryData && Array.isArray(queryData)
-			? ['All', ...new Set(queryData.map((item) => item.City))]
+			? ['All', ...new Set(queryData.map((item) => item.city))]
 			: ['All']
 
 	// Fuzzy search city function
 	const fuzzyMatchCity = (item, query) => {
 		if (query === 'All') return true
-		if (!cityFuse || !item.City) return false
+		if (!cityFuse || !item.city) return false
 
 		// Check exact match first
-		if (item.City.toLowerCase() === query.toLowerCase()) return true
+		if (item.city.toLowerCase() === query.toLowerCase()) return true
 
 		// Then do fuzzy search
 		const results = cityFuse.search({ name: query })
 		return results.some(
 			(result) =>
-				result.item.name.toLowerCase() === item.City.toLowerCase()
+				result.item.name.toLowerCase() === item.city.toLowerCase()
 		)
 	}
 
@@ -142,8 +142,8 @@ export default function Home() {
 						<div
 							className='field-row'
 							style={{
-								margin: '0 auto',
 								marginBottom: '10px',
+								margin: '0 auto',
 								width: 'max-content',
 							}}
 						>
@@ -153,14 +153,9 @@ export default function Home() {
 								value={selectedCity}
 								onChange={(e) => handleCitySearch(e)}
 								className='select'
-								style={{ color: 'black' }}
 							>
 								{uniqueCities.map((city) => (
-									<option
-										key={city}
-										value={city}
-										style={{ color: 'black' }}
-									>
+									<option key={city} value={city}>
 										{city}
 									</option>
 								))}
@@ -186,182 +181,45 @@ export default function Home() {
 							className='sunken-panel'
 							style={{
 								display: 'flex',
-								flexDirection: 'column',
-								margin: '0 auto',
-								width: '90%',
-								height: 'calc(100vh - 200px)',
-								overflowY: 'auto',
+								justifyContent: 'center',
 								overflowX: 'auto',
+								margin: '0 auto',
+								width: 'max-content',
 							}}
 						>
-							{filteredData.length > 0 && (
-								<div
-									style={{
-										padding: '10px',
-										backgroundColor: '#f0f0f0',
-										fontSize: '10px',
-										whiteSpace: 'pre-wrap',
-										marginBottom: '10px',
-										display: 'none',
-									}}
-								>
-									Data keys:{' '}
-									{Object.keys(filteredData[0]).join(', ')}
-								</div>
-							)}
-
 							<table
 								style={{
-									borderCollapse: 'collapse',
-									width: '100%',
-									textAlign: 'left',
+									margin: '0 auto',
+									textAlign: 'center',
 								}}
 							>
 								<thead>
 									<tr>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											City
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Shop Name
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Contact
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Email
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Fee
-										</th>
-										<th
-											style={{
-												padding: '8px',
-												backgroundColor: '#c0c0c0',
-												minWidth: '150px',
-												position: 'sticky',
-												top: 0,
-											}}
-										>
-											Instagram
-										</th>
+										<th>Address</th>
+										<th>City</th>
+										<th>Contact</th>
+										<th>Email</th>
+										<th>fee</th>
+										<th>Instagram</th>
+										<th>Shop Name</th>
 									</tr>
 								</thead>
 								<tbody>
 									{filteredData.length > 0 ? (
 										filteredData.map((item) => (
 											<tr key={item._id}>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.City}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.shop_name}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Contact}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Email}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Fee}
-												</td>
-												<td
-													style={{
-														padding: '8px',
-														borderBottom:
-															'1px solid #ddd',
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{item.Instagram}
-												</td>
+												<td>{item.address}</td>
+												<td>{item.city}</td>
+												<td>{item.contact}</td>
+												<td>{item.email}</td>
+												<td>{item.fee}</td>
+												<td>{item.instagram}</td>
+												<td>{item.shop_name}</td>
 											</tr>
 										))
 									) : (
 										<tr>
-											<td
-												colSpan='6'
-												style={{
-													padding: '8px',
-													textAlign: 'center',
-												}}
-											>
+											<td colSpan='7'>
 												No matching results found
 											</td>
 										</tr>
@@ -371,6 +229,27 @@ export default function Home() {
 						</div>
 					</>
 				)}
+				<div
+					className='field-row'
+					style={{ justifyContent: 'center', paddingTop: '10px' }}
+				>
+					<button
+						style={{ fontSize: '18px' }}
+						onClick={() => handleSignUp()}
+					>
+						Start
+					</button>
+					<button
+						style={{ fontSize: '18px' }}
+						// onClick={() => handleLogIn()}
+					>
+						Log In
+					</button>
+				</div>
+				<div
+					className='field-row'
+					style={{ justifyContent: 'center' }}
+				></div>
 			</div>
 		</div>
 	)
