@@ -16,7 +16,6 @@ import Enter from '@/components/Enter/Enter'
 import { useExitAnimation } from './hooks/useExit'
 import { motion, AnimatePresence } from 'motion/react'
 import { useRouter } from 'next/navigation'
-import FlashingAnimation from '@/components/FlashingAnimation/FlashingAnimation'
 
 import {
 	Glitch,
@@ -141,7 +140,7 @@ export default function Home() {
 								<FlashPlane
 									position={[0.1, 0.295, 3.56]}
 									onClick={() => {
-										const url = `https://flashbook.ink/`
+										const url = `https://https://flashbook.ink/`
 										window.open(
 											url,
 											'_blank',
@@ -162,16 +161,6 @@ export default function Home() {
 						{start && !intro && <Enter setIntro={setIntro} />}
 						{showQuestions && (
 							<>
-								<FlashingAnimation
-									onClick={() => {
-										const url = `https://flashbook.ink/`
-										window.open(
-											url,
-											'_blank',
-											'noopener,noreferrer'
-										)
-									}}
-								/>
 								{stage === 0 && (
 									<Question1
 										setStage={setStage}

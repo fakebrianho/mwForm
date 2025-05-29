@@ -162,16 +162,6 @@ export default function Home() {
 						{start && !intro && <Enter setIntro={setIntro} />}
 						{showQuestions && (
 							<>
-								<FlashingAnimation
-									onClick={() => {
-										const url = `https://flashbook.ink/`
-										window.open(
-											url,
-											'_blank',
-											'noopener,noreferrer'
-										)
-									}}
-								/>
 								{stage === 0 && (
 									<Question1
 										setStage={setStage}
