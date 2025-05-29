@@ -140,9 +140,9 @@ export default function Home() {
 								/>
 								<FlashPlane
 									position={[
-										!isMobile ? 0.1 : 0.1,
+										!isMobile ? 0.1 : 0.05,
 										0.295,
-										!isMobile ? 3.56 : 1.75,
+										!isMobile ? 3.56 : 1.8,
 									]}
 									onClick={() => {
 										const url = `https://flashbook.ink/`

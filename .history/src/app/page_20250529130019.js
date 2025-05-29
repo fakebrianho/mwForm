@@ -142,7 +142,7 @@ export default function Home() {
 									position={[
 										!isMobile ? 0.1 : 0.1,
 										0.295,
-										!isMobile ? 3.56 : 1.75,
+										!isMobile ? 3.56 : 0.75,
 									]}
 									onClick={() => {
 										const url = `https://flashbook.ink/`

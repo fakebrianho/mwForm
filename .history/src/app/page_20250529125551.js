@@ -140,7 +140,7 @@ export default function Home() {
 								/>
 								<FlashPlane
 									position={[
-										!isMobile ? 0.1 : 0.1,
+										!isMobile ? 0.1 : 0.065,
 										0.295,
 										!isMobile ? 3.56 : 1.75,
 									]}
