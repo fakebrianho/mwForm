@@ -9,32 +9,21 @@ if (!process.env.MONGODB_URI) {
 let uri = process.env.MONGODB_URI
 const dbName = 'mouthwash_db' // Hardcoded database name
 
-// Clean and rebuild the URI to ensure proper format
+// Remove any options to rebuild the URI
 let baseUri = uri.split('?')[0]
-// Remove any existing database name from the URI
-if (baseUri.endsWith('/')) {
-	baseUri = baseUri.slice(0, -1)
+// Remove any existing database name
+if (baseUri.split('/').length > 3) {
+	baseUri = baseUri.split('/').slice(0, 3).join('/')
 }
-// Remove existing database if present
-const uriParts = baseUri.split('/')
-if (uriParts.length > 3) {
-	baseUri = uriParts.slice(0, 3).join('/')
-}
-
-// Rebuild URI with proper database and SSL options
-uri = `${baseUri}/${dbName}?retryWrites=true&w=majority&ssl=true`
+// Add bero database name and options
+uri = `${baseUri}/${dbName}?retryWrites=true&w=majority`
 
 console.log(`Connecting to MongoDB database: ${dbName}`)
 
 const options = {
-	serverSelectionTimeoutMS: 30000, // Increased to 30 seconds for paused clusters
-	connectTimeoutMS: 30000,
+	serverSelectionTimeoutMS: 10000, // 10 second timeout
+	connectTimeoutMS: 10000,
 	maxPoolSize: 10,
-	retryWrites: true,
-	retryReads: true,
-	ssl: true,
-	tlsAllowInvalidCertificates: false,
-	tlsAllowInvalidHostnames: false,
 }
 
 let client
@@ -60,28 +49,8 @@ export default clientPromise
 
 // Helper to always get the bero database
 export async function getDb() {
-	try {
-		const client = await clientPromise
-		return client.db(dbName)
-	} catch (error) {
-		console.error('MongoDB connection failed:', {
-			message: error.message,
-			code: error.code,
-			name: error.name,
-		})
-
-		// Provide helpful error messages
-		if (error.message.includes('ssl') || error.message.includes('SSL')) {
-			console.error(
-				'💡 This looks like an SSL issue. Your MongoDB Atlas cluster might be paused.'
-			)
-			console.error(
-				'💡 Try resuming your cluster in the MongoDB Atlas dashboard.'
-			)
-		}
-
-		throw error
-	}
+	const client = await clientPromise
+	return client.db(dbName)
 }
 
 // Add a unique index on sessionID

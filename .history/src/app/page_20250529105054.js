@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useRouter } from 'next/navigation'
 
 import {
+	Bloom,
 	Glitch,
 	Pixelation,
 	EffectComposer,
@@ -54,11 +55,12 @@ export default function Home() {
 		setTimeout(() => {
 			console.log('Starting exit animation...')
 			setIsExiting(true)
-		}, 1500)
+		}, 2000)
 	}
 
 	const handleExitComplete = () => {
-		router.push('/database') // Add your target route here
+		console.log('Exit animation complete, navigating...')
+		// router.push('/next-page') // Add your target route here
 	}
 
 	useEffect(() => {

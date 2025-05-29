@@ -158,9 +158,9 @@ export default function Home() {
 								className='select'
 								style={{ color: 'black' }}
 							>
-								{uniqueCities.map((city, index) => (
+								{uniqueCities.map((city) => (
 									<option
-										key={`${city}-${index}`}
+										key={city}
 										value={city}
 										style={{ color: 'black' }}
 									>

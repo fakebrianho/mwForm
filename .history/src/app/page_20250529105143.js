@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useRouter } from 'next/navigation'
 
 import {
+	Bloom,
 	Glitch,
 	Pixelation,
 	EffectComposer,

@@ -5,7 +5,6 @@ import { useGetData } from '../hooks/useData'
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Fuse from 'fuse.js'
-import { motion } from 'framer-motion' // Add this import
 
 export default function Home() {
 	const getData = useGetData()
@@ -109,13 +108,7 @@ export default function Home() {
 	}
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, scale: 0 }}
-			animate={{ opacity: 1, scale: 1 }}
-			transition={{
-				duration: 1.15, // Duration in seconds
-				ease: 'easeInOut', // Optional: defines the easing function
-			}}
+		<div
 			style={{
 				width: '100vw',
 				height: '100vh',
@@ -158,9 +151,9 @@ export default function Home() {
 								className='select'
 								style={{ color: 'black' }}
 							>
-								{uniqueCities.map((city, index) => (
+								{uniqueCities.map((city) => (
 									<option
-										key={`${city}-${index}`}
+										key={city}
 										value={city}
 										style={{ color: 'black' }}
 									>
@@ -375,6 +368,6 @@ export default function Home() {
 					</>
 				)}
 			</div>
-		</motion.div>
+		</div>
 	)
 }

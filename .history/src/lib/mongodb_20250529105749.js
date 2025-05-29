@@ -20,7 +20,16 @@ uri = `${baseUri}/${dbName}?retryWrites=true&w=majority`
 
 console.log(`Connecting to MongoDB database: ${dbName}`)
 
-const options = {}
+const options = {
+	serverSelectionTimeoutMS: 30000, // Increased to 30 seconds for paused clusters
+	connectTimeoutMS: 30000,
+	maxPoolSize: 10,
+	retryWrites: true,
+	retryReads: true,
+	ssl: true,
+	tlsAllowInvalidCertificates: false,
+	tlsAllowInvalidHostnames: false,
+}
 
 let client
 let clientPromise

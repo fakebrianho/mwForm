@@ -113,7 +113,7 @@ export default function Home() {
 			initial={{ opacity: 0, scale: 0 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{
-				duration: 1.15, // Duration in seconds
+				duration: 0.5, // Duration in seconds
 				ease: 'easeInOut', // Optional: defines the easing function
 			}}
 			style={{
@@ -158,9 +158,9 @@ export default function Home() {
 								className='select'
 								style={{ color: 'black' }}
 							>
-								{uniqueCities.map((city, index) => (
+								{uniqueCities.map((city) => (
 									<option
-										key={`${city}-${index}`}
+										key={city}
 										value={city}
 										style={{ color: 'black' }}
 									>

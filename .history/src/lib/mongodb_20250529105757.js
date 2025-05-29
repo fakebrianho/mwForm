@@ -7,20 +7,35 @@ if (!process.env.MONGODB_URI) {
 
 // Parse the existing URI
 let uri = process.env.MONGODB_URI
-const dbName = 'bero' // Hardcoded database name
+const dbName = 'mouthwash_db' // Hardcoded database name
 
-// Remove any options to rebuild the URI
+// Clean and rebuild the URI to ensure proper format
 let baseUri = uri.split('?')[0]
-// Remove any existing database name
-if (baseUri.split('/').length > 3) {
-	baseUri = baseUri.split('/').slice(0, 3).join('/')
+// Remove any existing database name from the URI
+if (baseUri.endsWith('/')) {
+	baseUri = baseUri.slice(0, -1)
 }
-// Add bero database name and options
-uri = `${baseUri}/${dbName}?retryWrites=true&w=majority`
+// Remove existing database if present
+const uriParts = baseUri.split('/')
+if (uriParts.length > 3) {
+	baseUri = uriParts.slice(0, 3).join('/')
+}
+
+// Rebuild URI with proper database and SSL options
+uri = `${baseUri}/${dbName}?retryWrites=true&w=majority&ssl=true`
 
 console.log(`Connecting to MongoDB database: ${dbName}`)
 
-const options = {}
+const options = {
+	serverSelectionTimeoutMS: 30000, // Increased to 30 seconds for paused clusters
+	connectTimeoutMS: 30000,
+	maxPoolSize: 10,
+	retryWrites: true,
+	retryReads: true,
+	ssl: true,
+	tlsAllowInvalidCertificates: false,
+	tlsAllowInvalidHostnames: false,
+}
 
 let client
 let clientPromise
