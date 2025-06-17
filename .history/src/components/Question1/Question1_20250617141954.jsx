@@ -2,7 +2,6 @@
 import '98.css'
 import React, { useState, useEffect } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
-import styles from './Question1.module.css'
 
 function Question1(props) {
 	const [position, setPosition] = useState(null) // Initialize position as null
@@ -117,7 +116,7 @@ function Question1(props) {
 				cursor: isDragging ? 'grabbing' : 'grab',
 				zIndex: 1000,
 			}}
-			className={`window ${styles.mobileWindow}`}
+			className='window'
 			onMouseDown={handleMouseDown}
 			onTouchStart={handleTouchStart}
 		>
@@ -133,7 +132,7 @@ function Question1(props) {
 			</div>
 
 			<div className='window-body'>
-				<p className={styles.description}>
+				<p style={{ textAlign: 'center', fontSize: '18px' }}>
 					This database was made to help tattoo artists connect with
 					shops in other cities for guest spots. Accumulating this
 					information has potential to be powerful in helping artists
@@ -150,16 +149,15 @@ function Question1(props) {
 					style={{ justifyContent: 'center', paddingTop: '10px' }}
 				>
 					<button
-						className={styles.button}
+						style={{ fontSize: '18px' }}
 						onClick={() => {
 							handleSignUp()
-							props.setStart(true)
 						}}
 					>
 						Start
 					</button>
 					<button
-						className={styles.button}
+						style={{ fontSize: '18px' }}
 						onClick={() => handleLogIn()}
 					>
 						Log In

@@ -7,7 +7,7 @@ function Blockers(props) {
 	const meshRef = useRef()
 	const [shouldAnimateCamera, setShouldAnimateCamera] = useState(false)
 
-	useIntroAnimation(shouldAnimateCamera, props.setEnter)
+	useIntroAnimation(shouldAnimateCamera)
 
 	useEffect(() => {
 		if (meshRef.current && props.intro) {
@@ -15,15 +15,18 @@ function Blockers(props) {
 				opacity: 0,
 				duration: 0.75,
 				ease: 'power2.inOut',
+				onComplete: () => {
+					// props.setShow(true)
+				},
 			})
 			setShouldAnimateCamera(true)
 		}
 	}, [props.intro])
-	// useEffect(() => {
-	// 	if (meshRef.current) {
-	// 		props.setStart(true)
-	// 	}
-	// }, [])
+	useEffect(() => {
+		if (meshRef.current) {
+			props.setStart(true)
+		}
+	}, [])
 	return (
 		<mesh position={[0, 0, 4]} ref={meshRef}>
 			<planeGeometry args={[25, 10]} />

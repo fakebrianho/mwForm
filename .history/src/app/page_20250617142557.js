@@ -140,7 +140,7 @@ export default function Home() {
 									]}
 									rotation={[0, 0, 0]}
 								/>
-								{/* <FlashPlane
+								<FlashPlane
 									position={[
 										!isMobile ? 0.1 : 0.1,
 										0.295,
@@ -156,7 +156,7 @@ export default function Home() {
 									}}
 									width={0.25}
 									height={0.25}
-								/> */}
+								/>
 								<Environment
 									background={true}
 									files='sky.hdr'
@@ -166,38 +166,14 @@ export default function Home() {
 					</div>
 					<main className={styles.main}>
 						{enter && (
-							<>
-								<Enter
-									setEnter={setEnter}
-									setShowQuestions={setShowQuestions}
-								/>
-								<div
-									style={{
-										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
-										left: '50%',
-										transform: 'translateX(-50%)',
-										zIndex: 1000,
-									}}
-								>
-									<FlashButton
-										onClick={() => {
-											const url = `https://flashbook.ink/`
-											window.open(
-												url,
-												'_blank',
-												'noopener,noreferrer'
-											)
-										}}
-									>
-										Visit Flashbook
-									</FlashButton>
-								</div>
-							</>
+							<Enter
+								setEnter={setEnter}
+								setShowQuestions={setShowQuestions}
+							/>
 						)}
 						{showQuestions && (
 							<>
-								{/* <FlashingAnimation
+								<FlashingAnimation
 									onClick={() => {
 										const url = `https://flashbook.ink/`
 										window.open(
@@ -206,7 +182,7 @@ export default function Home() {
 											'noopener,noreferrer'
 										)
 									}}
-								/> */}
+								/>
 
 								{stage === 0 && (
 									<Question1
@@ -311,7 +287,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: '80px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,

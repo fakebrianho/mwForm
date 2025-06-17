@@ -17,14 +17,14 @@ export const useIntroAnimation = (shouldAnimate = false, callback = null) => {
 
 		// Create custom ease-in-quad based on the cubic-bezier values
 
-		// var sound = new Howl({
-		// 	src: ['Database_music.wav'],
-		// 	autoplay: true,
-		// 	loop: true,
-		// 	volume: 0.5,
-		// 	onend: function () {},
-		// })
-		// sound.play()
+		var sound = new Howl({
+			src: ['Database_music.wav'],
+			autoplay: true,
+			loop: true,
+			volume: 0.5,
+			onend: function () {},
+		})
+		sound.play()
 
 		tl.current = gsap.timeline({
 			onComplete: () => {

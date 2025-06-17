@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
 import styles from './Question.module.css'
 import { Howl } from 'howler'
-import { isMobile } from 'react-device-detect'
 
 // Modified playAudio function that doesn't stop all sounds
 function playAudio(url) {
@@ -99,7 +98,7 @@ function Question2(props) {
 			const touch = e.touches[0]
 			setPosition({
 				x: touch.clientX - dragOffset.x,
-				y: touch.clientY - dragOffset.y,
+				y: touch.clientY - position.y,
 			})
 			e.preventDefault() // Prevent scrolling while dragging
 		}
@@ -156,26 +155,21 @@ function Question2(props) {
 	return (
 		<div
 			style={{
-				width: isMobile ? '75%' : '50vw',
+				width: '50vw',
 				padding: props.padding || 0,
 				position: 'absolute',
 				left: `${position.x}px`,
 				top: `${position.y}px`,
 				cursor: isDragging ? 'grabbing' : 'grab',
+				// fontSize: '24px',
 				zIndex: 1000,
 			}}
 			className='window'
 			onMouseDown={handleMouseDown}
 			onTouchStart={handleTouchStart}
 		>
-			<div
-				className='title-bar'
-				style={{ fontSize: isMobile ? '14px' : '20px' }}
-			>
-				<div
-					className='title-bar-text'
-					style={{ fontSize: isMobile ? '12px' : '18px' }}
-				>
+			<div className='title-bar' style={{ fontSize: '20px' }}>
+				<div className='title-bar-text' style={{ fontSize: '18px' }}>
 					Question {props.stage}:{' '}
 				</div>
 				<div className='title-bar-controls'>
@@ -187,28 +181,19 @@ function Question2(props) {
 
 			<div className='window-body'>
 				<form onSubmit={handleSubmit}>
-					<div
-						className='field-row'
-						style={{ fontSize: isMobile ? '14px' : '18px' }}
-					>
-						<label
-							style={{ fontSize: isMobile ? '14px' : '18px' }}
-							htmlFor='question1'
-						>
+					<div className='field-row' style={{ fontSize: '18px' }}>
+						<label style={{ fontSize: '18px' }} htmlFor='question1'>
 							{props.question}
 						</label>
 						<input
-							style={{ fontSize: isMobile ? '14px' : '18px' }}
+							style={{ fontSize: '18px' }}
 							className={styles.input}
 							id='question1'
 							type='text'
 							onChange={(e) => setInput(e.target.value)}
 							ref={inputRef}
 						/>
-						<button
-							style={{ fontSize: isMobile ? '14px' : '18px' }}
-							type='submit'
-						>
+						<button style={{ fontSize: '18px' }} type='submit'>
 							Submit
 						</button>
 					</div>

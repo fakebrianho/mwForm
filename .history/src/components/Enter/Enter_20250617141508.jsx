@@ -29,8 +29,7 @@ function Enter(props) {
 					<button
 						style={{ fontSize: '18px' }}
 						onClick={() => {
-							props.setEnter(false)
-							props.setShowQuestions(true)
+							props.setIntro(true)
 							playMusic()
 						}}
 					>

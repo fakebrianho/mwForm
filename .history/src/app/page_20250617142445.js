@@ -140,7 +140,7 @@ export default function Home() {
 									]}
 									rotation={[0, 0, 0]}
 								/>
-								{/* <FlashPlane
+								<FlashPlane
 									position={[
 										!isMobile ? 0.1 : 0.1,
 										0.295,
@@ -156,7 +156,7 @@ export default function Home() {
 									}}
 									width={0.25}
 									height={0.25}
-								/> */}
+								/>
 								<Environment
 									background={true}
 									files='sky.hdr'
@@ -166,15 +166,28 @@ export default function Home() {
 					</div>
 					<main className={styles.main}>
 						{enter && (
+							<Enter
+								setEnter={setEnter}
+								setShowQuestions={setShowQuestions}
+							/>
+						)}
+						{showQuestions && (
 							<>
-								<Enter
-									setEnter={setEnter}
-									setShowQuestions={setShowQuestions}
+								<FlashingAnimation
+									onClick={() => {
+										const url = `https://flashbook.ink/`
+										window.open(
+											url,
+											'_blank',
+											'noopener,noreferrer'
+										)
+									}}
 								/>
+								{/* Example of the new FlashButton with 98.css styling */}
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: '80px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,
@@ -193,21 +206,6 @@ export default function Home() {
 										Visit Flashbook
 									</FlashButton>
 								</div>
-							</>
-						)}
-						{showQuestions && (
-							<>
-								{/* <FlashingAnimation
-									onClick={() => {
-										const url = `https://flashbook.ink/`
-										window.open(
-											url,
-											'_blank',
-											'noopener,noreferrer'
-										)
-									}}
-								/> */}
-
 								{stage === 0 && (
 									<Question1
 										setStage={setStage}
@@ -308,28 +306,6 @@ export default function Home() {
 										error={formErrors.answer7}
 									/>
 								)}
-								<div
-									style={{
-										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
-										left: '50%',
-										transform: 'translateX(-50%)',
-										zIndex: 1000,
-									}}
-								>
-									<FlashButton
-										onClick={() => {
-											const url = `https://flashbook.ink/`
-											window.open(
-												url,
-												'_blank',
-												'noopener,noreferrer'
-											)
-										}}
-									>
-										Visit Flashbook
-									</FlashButton>
-								</div>
 								{start && (
 									<div
 										style={{

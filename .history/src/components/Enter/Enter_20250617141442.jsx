@@ -28,11 +28,7 @@ function Enter(props) {
 				<div className='field-row' style={{ justifyContent: 'center' }}>
 					<button
 						style={{ fontSize: '18px' }}
-						onClick={() => {
-							props.setEnter(false)
-							props.setShowQuestions(true)
-							playMusic()
-						}}
+						onClick={() => props.setIntro(true) playMusic()}
 					>
 						ENTER
 					</button>

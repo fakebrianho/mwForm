@@ -5,7 +5,13 @@ import { Howl } from 'howler'
 
 // Register the CustomEase plugin
 
-export const useIntroAnimation = (shouldAnimate = false, callback = null) => {
+export const useIntroAnimation = (
+	shouldAnimate = false,
+	duration = 1.2,
+	targetZ = 5,
+	soundVolume = 0.5,
+	soundSrc = 'Database_music.wav'
+) => {
 	const { camera } = useThree()
 	const tl = useRef()
 
@@ -17,30 +23,28 @@ export const useIntroAnimation = (shouldAnimate = false, callback = null) => {
 
 		// Create custom ease-in-quad based on the cubic-bezier values
 
-		// var sound = new Howl({
-		// 	src: ['Database_music.wav'],
-		// 	autoplay: true,
-		// 	loop: true,
-		// 	volume: 0.5,
-		// 	onend: function () {},
-		// })
-		// sound.play()
-
-		tl.current = gsap.timeline({
-			onComplete: () => {
-				if (callback) callback(true)
+		var sound = new Howl({
+			src: [soundSrc],
+			autoplay: true,
+			loop: true,
+			volume: soundVolume,
+			onend: function () {
+				console.log('Finished!')
 			},
 		})
+		sound.play()
+
+		tl.current = gsap.timeline()
 		tl.current.to(camera.position, {
-			z: 5,
-			duration: 1.2,
+			z: targetZ,
+			duration: duration,
 			// ease: 'power2.inOut',
 		})
 
 		return () => {
 			tl.current && tl.current.kill()
 		}
-	}, [camera, shouldAnimate]) // Include shouldAnimate in dependencies
+	}, [camera, shouldAnimate, duration, targetZ, soundVolume, soundSrc]) // Include all props in dependencies
 
 	return tl.current
 }

@@ -15,6 +15,7 @@ function Blockers(props) {
 				opacity: 0,
 				duration: 0.75,
 				ease: 'power2.inOut',
+				onComplete: () => {},
 			})
 			setShouldAnimateCamera(true)
 		}

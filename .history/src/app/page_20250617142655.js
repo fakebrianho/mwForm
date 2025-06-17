@@ -166,34 +166,32 @@ export default function Home() {
 					</div>
 					<main className={styles.main}>
 						{enter && (
-							<>
-								<Enter
-									setEnter={setEnter}
-									setShowQuestions={setShowQuestions}
-								/>
-								<div
-									style={{
-										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
-										left: '50%',
-										transform: 'translateX(-50%)',
-										zIndex: 1000,
-									}}
-								>
-									<FlashButton
-										onClick={() => {
-											const url = `https://flashbook.ink/`
-											window.open(
-												url,
-												'_blank',
-												'noopener,noreferrer'
-											)
-										}}
-									>
-										Visit Flashbook
-									</FlashButton>
-								</div>
-							</>
+							<Enter
+								setEnter={setEnter}
+								setShowQuestions={setShowQuestions}
+							/>
+							<div
+							style={{
+								position: 'fixed',
+								bottom: '80px',
+								left: '50%',
+								transform: 'translateX(-50%)',
+								zIndex: 1000,
+							}}
+						>
+							<FlashButton
+								onClick={() => {
+									const url = `https://flashbook.ink/`
+									window.open(
+										url,
+										'_blank',
+										'noopener,noreferrer'
+									)
+								}}
+							>
+								Visit Flashbook
+							</FlashButton>
+						</div>
 						)}
 						{showQuestions && (
 							<>
@@ -311,7 +309,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: '80px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,

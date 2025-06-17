@@ -174,7 +174,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: '80px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,
@@ -311,7 +311,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: '80px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,

@@ -1,0 +1,47 @@
+.flashButton {
+	/* 98.css button styling */
+	background: #c0c0c0;
+	border: 2px outset #c0c0c0;
+	padding: 8px 16px;
+	font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #000;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 23px;
+	text-decoration: none;
+	user-select: none;
+	transition: none;
+}
+
+.flashButton:hover {
+	background: #d4d0c8;
+}
+
+.flashButton:active {
+	border: 2px inset #c0c0c0;
+	background: #c0c0c0;
+}
+
+.flashButton:focus {
+	outline: 1px dotted #000;
+}
+
+.buttonContent {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.flashImage {
+	width: 16px;
+	height: 16px;
+	object-fit: contain;
+}
+
+.buttonText {
+	white-space: nowrap;
+}

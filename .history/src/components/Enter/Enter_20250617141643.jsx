@@ -30,7 +30,7 @@ function Enter(props) {
 						style={{ fontSize: '18px' }}
 						onClick={() => {
 							props.setEnter(false)
-							props.setShowQuestions(true)
+							props.showQuestions(true)
 							playMusic()
 						}}
 					>
