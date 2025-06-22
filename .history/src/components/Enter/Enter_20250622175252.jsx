@@ -1,6 +1,7 @@
 'use client'
 import '98.css'
 import React from 'react'
+import { playMusic } from '@/app/utils/playMusic'
 
 function Enter(props) {
 	return (
@@ -9,7 +10,7 @@ function Enter(props) {
 				width: '20vw',
 				position: 'absolute',
 				left: '50%',
-				top: '50%',
+				top: '30%',
 				transform: 'translate(-50%, -50%)',
 				zIndex: 1000,
 			}}
@@ -27,7 +28,11 @@ function Enter(props) {
 				<div className='field-row' style={{ justifyContent: 'center' }}>
 					<button
 						style={{ fontSize: '18px' }}
-						onClick={() => props.setIntro(true)}
+						onClick={() => {
+							props.setEnter(false)
+							props.setShowQuestions(true)
+							playMusic()
+						}}
 					>
 						ENTER
 					</button>

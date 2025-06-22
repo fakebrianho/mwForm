@@ -10,7 +10,7 @@ function Enter(props) {
 				width: '20vw',
 				position: 'absolute',
 				left: '50%',
-				top: '25%',
+				top: '20%',
 				transform: 'translate(-50%, -50%)',
 				zIndex: 1000,
 			}}
