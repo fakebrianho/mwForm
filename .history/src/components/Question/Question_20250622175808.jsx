@@ -36,22 +36,6 @@ function Question2(props) {
 		setPosition(getRandomPosition(componentWidth, componentHeight))
 	}, [])
 
-	// Handle window resize
-	useEffect(() => {
-		const handleResize = () => {
-			const windowWidth = window.innerWidth
-			const componentWidth = isMobile
-				? windowWidth * 0.75
-				: windowWidth * 0.5
-			const componentHeight = 300 // Estimated height for question components
-
-			setPosition(getRandomPosition(componentWidth, componentHeight))
-		}
-
-		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
-	}, [])
-
 	// Combined effect for audio and focus - runs when position is set and question becomes active
 	useEffect(() => {
 		// Reset audio played flag when currentStage changes

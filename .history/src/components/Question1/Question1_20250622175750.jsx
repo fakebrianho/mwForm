@@ -3,7 +3,6 @@ import '98.css'
 import React, { useState, useEffect, useRef } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
 import styles from './Question1.module.css'
-import { isMobile } from 'react-device-detect'
 
 function Question1(props) {
 	const [position, setPosition] = useState(null) // Initialize position as null
@@ -13,29 +12,14 @@ function Question1(props) {
 	const componentRef = useRef(null)
 
 	useEffect(() => {
-		// Calculate component dimensions
-		const windowWidth =
-			typeof window !== 'undefined' ? window.innerWidth : 1200
-		const componentWidth = isMobile ? windowWidth * 0.75 : windowWidth * 0.5 // Match CSS: 75vw on mobile, 50vw on desktop
-		const componentHeight = 400 // Estimated height based on content
-
-		setPosition(getRandomPosition(componentWidth, componentHeight))
-	}, [])
-
-	// Handle window resize
-	useEffect(() => {
-		const handleResize = () => {
-			const windowWidth = window.innerWidth
-			const componentWidth = isMobile
-				? windowWidth * 0.75
-				: windowWidth * 0.5 // Match CSS: 75vw on mobile, 50vw on desktop
-			const componentHeight = 400 // Estimated height based on content
-
-			setPosition(getRandomPosition(componentWidth, componentHeight))
+		// Get component dimensions after it renders
+		if (componentRef.current) {
+			const rect = componentRef.current.getBoundingClientRect()
+			setPosition(getRandomPosition(rect.width, rect.height))
+		} else {
+			// Fallback to default dimensions if ref is not available
+			setPosition(getRandomPosition())
 		}
-
-		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
 	}, [])
 
 	// Handle mouse down event to start dragging
@@ -132,9 +116,8 @@ function Question1(props) {
 
 	return (
 		<div
-			ref={componentRef}
 			style={{
-				width: isMobile ? '75vw' : '50vw',
+				width: '50vw',
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,
@@ -145,6 +128,7 @@ function Question1(props) {
 			className={`window ${styles.mobileWindow}`}
 			onMouseDown={handleMouseDown}
 			onTouchStart={handleTouchStart}
+			ref={componentRef}
 		>
 			<div className='title-bar'>
 				<div className='title-bar-text'>

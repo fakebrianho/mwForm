@@ -34,8 +34,36 @@ function Question1(props) {
 			setPosition(getRandomPosition(componentWidth, componentHeight))
 		}
 
+		// Handle visual viewport changes (mobile keyboard, orientation)
+		const handleVisualViewportResize = () => {
+			if (window.visualViewport) {
+				const windowWidth = window.visualViewport.width
+				const componentWidth = isMobile
+					? windowWidth * 0.75
+					: windowWidth * 0.5
+				const componentHeight = 400
+
+				setPosition(getRandomPosition(componentWidth, componentHeight))
+			}
+		}
+
 		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
+		if (window.visualViewport) {
+			window.visualViewport.addEventListener(
+				'resize',
+				handleVisualViewportResize
+			)
+		}
+
+		return () => {
+			window.removeEventListener('resize', handleResize)
+			if (window.visualViewport) {
+				window.visualViewport.removeEventListener(
+					'resize',
+					handleVisualViewportResize
+				)
+			}
+		}
 	}, [])
 
 	// Handle mouse down event to start dragging

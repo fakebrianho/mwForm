@@ -134,7 +134,7 @@ function Question1(props) {
 		<div
 			ref={componentRef}
 			style={{
-				width: isMobile ? '75vw' : '50vw',
+				width: '50vw',
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,

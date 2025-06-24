@@ -1,8 +1,13 @@
 export const getRandomPosition = (componentWidth, componentHeight) => {
-	// Use regular viewport dimensions to avoid keyboard-triggered repositioning
-	const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1200
+	// Use visual viewport dimensions for more accurate mobile positioning
+	const windowWidth =
+		typeof window !== 'undefined'
+			? window.visualViewport?.width || window.innerWidth
+			: 1200
 	const windowHeight =
-		typeof window !== 'undefined' ? window.innerHeight : 800
+		typeof window !== 'undefined'
+			? window.visualViewport?.height || window.innerHeight
+			: 800
 
 	// Default to 50vw (50% of viewport width) if not specified
 	const width = componentWidth || windowWidth * 0.5

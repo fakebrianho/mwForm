@@ -3,7 +3,6 @@ import '98.css'
 import React, { useState, useEffect, useRef } from 'react'
 import { getRandomPosition } from '@/app/utils/getRandomPosition'
 import styles from './Question1.module.css'
-import { isMobile } from 'react-device-detect'
 
 function Question1(props) {
 	const [position, setPosition] = useState(null) // Initialize position as null
@@ -16,26 +15,10 @@ function Question1(props) {
 		// Calculate component dimensions
 		const windowWidth =
 			typeof window !== 'undefined' ? window.innerWidth : 1200
-		const componentWidth = isMobile ? windowWidth * 0.75 : windowWidth * 0.5 // Match CSS: 75vw on mobile, 50vw on desktop
+		const componentWidth = windowWidth * 0.5 // 50vw
 		const componentHeight = 400 // Estimated height based on content
 
 		setPosition(getRandomPosition(componentWidth, componentHeight))
-	}, [])
-
-	// Handle window resize
-	useEffect(() => {
-		const handleResize = () => {
-			const windowWidth = window.innerWidth
-			const componentWidth = isMobile
-				? windowWidth * 0.75
-				: windowWidth * 0.5 // Match CSS: 75vw on mobile, 50vw on desktop
-			const componentHeight = 400 // Estimated height based on content
-
-			setPosition(getRandomPosition(componentWidth, componentHeight))
-		}
-
-		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
 	}, [])
 
 	// Handle mouse down event to start dragging
@@ -134,7 +117,7 @@ function Question1(props) {
 		<div
 			ref={componentRef}
 			style={{
-				width: isMobile ? '75vw' : '50vw',
+				width: '50vw',
 				paddingBottom: 10,
 				position: 'absolute',
 				left: `${position.x}px`,
