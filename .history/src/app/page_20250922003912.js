@@ -18,7 +18,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import FlashingAnimation from '@/components/FlashingAnimation/FlashingAnimation'
 import FlashButton from '@/components/FlashButton/FlashButton'
-import { playTransitionMusic } from '@/app/utils/playMusic'
+
 import {
 	Glitch,
 	Pixelation,
@@ -49,36 +49,24 @@ export default function Home() {
 	const { ExitAnimation, isPlaying, startAnimation } = useExitAnimation()
 	const [glitchOut, setGlitchOut] = useState(false)
 	const [isExiting, setIsExiting] = useState(false)
-
 	const handleAnimationComplete = () => {
 		console.log('Animation is complete!')
 		setGlitchOut(true)
 
 		// Trigger exit animation after 2 seconds
-		// setTimeout(() => {
-		// 	console.log('Starting exit animation...')
-		// 	setIsExiting(true)
-		// }, 1500)
-		// const audio = new Audio('/t1.wav')
-		// audio.play()
-		// audio.onended = () => {
-		// console.log('Exit animation complete, navigating to /database')
-		// setIsExiting(true)
-		// }
-		playTransitionMusic()
 		setTimeout(() => {
 			console.log('Starting exit animation...')
 			setIsExiting(true)
-		}, 1000)
+		}, 1500)
 	}
 
 	const handleExitComplete = () => {
-		// const audio = new Audio('/t1.wav')
-		// audio.play()
-		// audio.onended = () => {
-		// console.log('Exit animation complete, navigating to /database')
-		router.push('/database')
-		// }
+		const audio = new Audio('/t1.wav')
+		audio.play()
+		audio.onended = () => {
+			console.log('Exit animation complete, navigating to /database')
+			router.push('/database')
+		}
 	}
 
 	useEffect(() => {

@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Fuse from 'fuse.js'
 import { motion } from 'framer-motion' // Add this import
-import { playTailMusic } from '../utils/playMusic'
 
 export default function Home() {
 	const getData = useGetData()
@@ -14,7 +13,8 @@ export default function Home() {
 	const [searchQuery, setSearchQuery] = useState('')
 
 	useEffect(() => {
-		playTailMusic()
+		const audio = new Audio('/t2.wav')
+		audio.play()
 	}, [])
 	const {
 		data: queryData,

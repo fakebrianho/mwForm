@@ -21,13 +21,3 @@ export const playTransitionMusic = () => {
 	sound.play()
 	return sound
 }
-export const playTailMusic = () => {
-	var sound = new Howl({
-		src: ['t3.wav'],
-		autoplay: true,
-		loop: false,
-		volume: 0.5,
-	})
-	sound.play()
-	return sound
-}

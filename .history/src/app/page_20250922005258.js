@@ -69,7 +69,7 @@ export default function Home() {
 		setTimeout(() => {
 			console.log('Starting exit animation...')
 			setIsExiting(true)
-		}, 1000)
+		}, 2500)
 	}
 
 	const handleExitComplete = () => {
