@@ -15,14 +15,6 @@ export default function Home() {
 	const [selectedCity, setSelectedCity] = useState('All')
 	const [searchQuery, setSearchQuery] = useState('')
 
-	// Audio preloader
-	const audioPreloader = useAudioPreloader()
-
-	// Set up audio preloader for enhanced music functions
-	useEffect(() => {
-		setAudioPreloader(audioPreloader)
-	}, [audioPreloader])
-
 	useEffect(() => {
 		fadeOutTransitionMusic(3000)
 		// Play DB music after transition music fades out

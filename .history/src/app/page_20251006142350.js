@@ -41,14 +41,10 @@ export default function Home() {
 	const [intro, setIntro] = useState(true)
 	const [start, setStart] = useState(false)
 	const [enter, setEnter] = useState(false)
-
+	
 	// Audio preloader
 	const audioPreloader = useAudioPreloader()
-	const {
-		loadingProgress,
-		isLoading: isAudioLoading,
-		error: audioError,
-	} = audioPreloader
+	const { loadingProgress, isLoading: isAudioLoading, error: audioError } = audioPreloader
 	const [answer1, setAnswer1] = useState('')
 	const [answer2, setAnswer2] = useState('')
 	const [answer3, setAnswer3] = useState('')
@@ -151,15 +147,7 @@ export default function Home() {
 									/>
 								)}
 							</EffectComposer>
-							<Suspense
-								fallback={
-									<Loading
-										audioProgress={loadingProgress}
-										isAudioLoading={isAudioLoading}
-										error={audioError}
-									/>
-								}
-							>
+							<Suspense fallback={<Loading audioProgress={loadingProgress} isAudioLoading={isAudioLoading} error={audioError} />}>
 								<Blockers
 									setShow={setShowQuestions}
 									intro={intro}

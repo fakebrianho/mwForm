@@ -14,10 +14,10 @@ export default function Home() {
 	const getData = useGetData()
 	const [selectedCity, setSelectedCity] = useState('All')
 	const [searchQuery, setSearchQuery] = useState('')
-
+	
 	// Audio preloader
 	const audioPreloader = useAudioPreloader()
-
+	
 	// Set up audio preloader for enhanced music functions
 	useEffect(() => {
 		setAudioPreloader(audioPreloader)

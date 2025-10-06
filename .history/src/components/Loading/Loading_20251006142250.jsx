@@ -47,7 +47,7 @@ function Loading({ audioProgress = 0, isAudioLoading = true, error = null }) {
 				<p className={styles.subtitle}>{getSubtitle()}</p>
 				{isAudioLoading && (
 					<div className={styles.progressBar}>
-						<div
+						<div 
 							className={styles.progressFill}
 							style={{ width: `${audioProgress}%` }}
 						></div>
