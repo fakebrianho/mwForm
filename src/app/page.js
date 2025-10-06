@@ -18,7 +18,10 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import FlashingAnimation from '@/components/FlashingAnimation/FlashingAnimation'
 import FlashButton from '@/components/FlashButton/FlashButton'
-import { playTransitionMusic } from '@/app/utils/playMusic'
+import {
+	playTransitionMusic,
+	fadeOutBackgroundMusic,
+} from '@/app/utils/playMusic'
 import {
 	Glitch,
 	Pixelation,
@@ -69,7 +72,7 @@ export default function Home() {
 		setTimeout(() => {
 			console.log('Starting exit animation...')
 			setIsExiting(true)
-		}, 1000)
+		}, 500)
 	}
 
 	const handleExitComplete = () => {
@@ -83,6 +86,9 @@ export default function Home() {
 
 	useEffect(() => {
 		if (stage === 8) {
+			// Fade out background music when final question is submitted and animation starts
+			fadeOutBackgroundMusic(1500)
+
 			const payload = {
 				shop_name: answer1,
 				instagram: answer2,
@@ -177,6 +183,7 @@ export default function Home() {
 								<Environment
 									background={true}
 									files='sky.hdr'
+									backgroundRotation={[-Math.PI / 4.5, 0, 0]} // optional rotation (default: 0, only works with three 0.163 and up)
 								/>
 							</Suspense>
 						</Canvas>
@@ -191,7 +198,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: !isMobile ? '140px' : '40px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,
@@ -328,7 +335,7 @@ export default function Home() {
 								<div
 									style={{
 										position: 'fixed',
-										bottom: !isMobile ? '80px' : '40px',
+										bottom: !isMobile ? '140px' : '40px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 1000,

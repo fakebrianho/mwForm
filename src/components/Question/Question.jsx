@@ -24,7 +24,6 @@ function Question2(props) {
 	const inputRef = useRef(null) // Add ref for input field
 	const soundRef = useRef(null) // Add ref for the sound instance
 	const audioPlayedRef = useRef(false) // Add ref to track if audio has been played
-	const isReadyRef = useRef(false) // Add ref to track if component is ready
 
 	useEffect(() => {
 		// Calculate component dimensions
@@ -68,19 +67,26 @@ function Question2(props) {
 
 			// Play audio only once when question becomes active
 			if (props.url && !audioPlayedRef.current) {
+				console.log('props.url', props.url)
 				// If there's a previous question sound, stop it
 				if (soundRef.current) {
 					soundRef.current.stop()
 				}
 				// Create and play new sound
 				soundRef.current = playAudio(props.url)
+				console.log('soundRef.current', soundRef.current)
 				audioPlayedRef.current = true // Mark audio as played
 			}
 		}
 
-		// Cleanup function to stop only this component's sound
+		// Cleanup function - only stop sound if we're going backwards or starting a new question
 		return () => {
-			if (soundRef.current) {
+			// Only stop the sound if the current stage is less than this question's stage
+			// This prevents stopping the sound when moving forward (e.g., from question 7 to exit animation)
+			if (
+				soundRef.current &&
+				props.currentStage < parseInt(props.stage)
+			) {
 				soundRef.current.stop()
 			}
 		}
